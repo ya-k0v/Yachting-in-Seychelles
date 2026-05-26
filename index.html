@@ -7,7 +7,7 @@
   <meta name="description" content="Круиз на Lagoon 42 Golden Bride, Eden Island Marina: маршрут, карта, снаряжение и безопасность.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=block" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <style>
     :root {
@@ -406,7 +406,31 @@
         font-size: 0.82rem;
         padding: 0.45rem 0.5rem;
       }
+
+      .rate-widget { display: none; }
     }
+
+    #scroll-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #062a26; border: none;
+      font-size: 1.3rem; cursor: pointer; z-index: 999;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    #scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #scroll-top:hover { background: #6dd5c4; }
+
+    .rate-widget {
+      position: fixed; bottom: 1.5rem; left: 1.5rem;
+      background: rgba(12,30,36,0.88); backdrop-filter: blur(8px);
+      border: 1px solid rgba(62,201,184,0.15);
+      border-radius: 10px; padding: 0.55rem 0.85rem;
+      font-size: 0.78rem; color: var(--muted); z-index: 999;
+      line-height: 1.6; white-space: nowrap;
+    }
+    .rate-widget span { color: var(--accent); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -428,8 +452,11 @@
       <p style="margin:0 0 1rem; font-size:0.95rem; color:var(--muted); max-width:36rem;">
         <a href="https://www.boataround.com/ru/yachta/lagoon-42-golden-bride" rel="noopener noreferrer">Lagoon 42 «Golden Bride» на Boataround</a>
       </p>
-      <a class="hero-cta" href="#itinerary">Смотреть маршрут</a>
-      <a class="hero-cta" href="nutrition.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);margin-left:0.75rem;">План питания</a>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+        <a class="hero-cta" href="#itinerary">Смотреть маршрут</a>
+        <a class="hero-cta" href="nutrition.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">План питания</a>
+        <a class="hero-cta" href="info.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">Справка</a>
+      </div>
     </div>
   </header>
 
@@ -441,8 +468,6 @@
       <a href="#gear">Снаряжение</a>
       <a href="#marina">Марина и логистика</a>
       <a href="#safety">Безопасность</a>
-      <a href="nutrition.html">Питание</a>
-    </div>
   </nav>
 
   <main class="wrap">
@@ -469,8 +494,8 @@
           <span>всего под парусом*</span>
         </div>
         <div class="stat">
-          <strong>ЮВ муссон</strong>
-          <span>типично для ноября</span>
+          <strong>СЗ муссон</strong>
+          <span>переходный период, ветер 10–15 узлов</span>
         </div>
       </div>
       <p class="map-note">*Пробег зависит от выбранных дневных этапов и погоды.</p>
@@ -524,7 +549,7 @@
           <ul>
             <li>Оформление яхты, инвентаризация, инструктаж по системам и парусам.</li>
             <li>Закупка провизии: супермаркет на Eden Island, Виктория или по пути от аэропорта SEZ (~7 км до марины).</li>
-             <li>Прогулка по Eden Island, вид на залив; при желании — такси до Виктории (рынок Sir Selwyn Selwyn-Clarke · <a class="map-inline" href="https://www.google.com/maps?q=-4.619,55.451" target="_blank" rel="noopener">карта</a> и др.).</li>
+             <li>Прогулка по Eden Island, вид на залив; при желании — такси до Виктории (рынок Sir Selwyn Selwyn-Clarke · <a class="map-inline" href="https://www.google.com/maps?q=Sir+Selwyn+Selwyn-Clarke+Market+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> и др.).</li>
             <li>Вечером — планирование переходов по погоде (GRIB, местные прогнозы), ранний отдых.</li>
           </ul>
           <p class="day-meta">Ночёвка: у причала в Eden Island Marina или короткий выход на якорь в пределах залива только по согласованию с чартером — без дневного «перехода» как этапа круиза.</p>
@@ -844,6 +869,30 @@
 
       map.fitBounds(latlngs, { padding: [40, 40] });
     })();
+  </script>
+
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
+  <div class="rate-widget" id="rate-widget">Загрузка курса…</div>
+
+  <script>
+    async function updateRates() {
+      try {
+        var r = await fetch('https://open.er-api.com/v6/latest/USD');
+        var d = await r.json();
+        var usd = d.rates.SCR, eur = d.rates.SCR / d.rates.EUR, rub = d.rates.RUB / d.rates.SCR;
+        document.getElementById('rate-widget').innerHTML =
+          '<span>1 USD</span> = ' + usd.toFixed(1) + ' SCR · <span>1 EUR</span> = ' + eur.toFixed(1) + ' SCR · <span>1 SCR</span> = ' + rub.toFixed(1) + ' RUB';
+      } catch(e) { document.getElementById('rate-widget').innerHTML = 'Курс недоступен'; }
+    }
+    updateRates();
+    setInterval(updateRates, 3600000);
+  </script>
+
+  <script>
+    window.addEventListener('scroll', function () {
+      document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 500);
+    });
   </script>
 </body>
 </html>

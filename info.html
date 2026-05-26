@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Связь, навигация и локальная информация · Сейшелы · 14–21 ноября 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=block" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c1e24;
+      --bg-soft: #132a32;
+      --surface: #1a3842;
+      --text: #e8f4f2;
+      --muted: #9db8b5;
+      --accent: #3ec9b8;
+      --accent-dim: #2a9d8f;
+      --sand: #e8d5b5;
+      --warning: #f4a261;
+      --radius: 14px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Source Sans 3", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 1.25rem 4rem; }
+    .hero {
+      position: relative; min-height: 70vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem 1.25rem 3rem;
+      background: linear-gradient(180deg, rgba(12,30,36,0.15) 0%, rgba(12,30,36,0.92) 78%);
+      border-bottom: 1px solid rgba(62,201,184,0.15);
+      overflow: hidden;
+    }
+    .hero-wave { position: absolute; inset: -10px 0; width: 100%; height: calc(100% + 20px); pointer-events: none; }
+    .hero-inner { max-width: 920px; margin: 0 auto; }
+    .eyebrow {
+      font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.1rem,5vw,3.25rem); line-height: 1.12;
+      margin: 0 0 0.5rem; letter-spacing: -0.02em;
+    }
+    .hero .dates {
+      font-family: var(--font-display); font-style: italic;
+      font-size: 1.35rem; color: var(--sand); margin-bottom: 1.75rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: #062a26; font-weight: 600;
+      padding: 0.75rem 1.35rem; border-radius: 999px; box-shadow: var(--shadow);
+    }
+    .hero-cta:hover { text-decoration: none; background: #52dfd0; }
+    a.map-inline { color: var(--accent); font-size: 0.75rem; font-weight: 400; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+    a.map-inline:hover { color: #6dd5c4; }
+    a[href*="google.com/maps"] { text-decoration: none; }
+    a[href*="google.com/maps"]:hover { text-decoration: none; }
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12, 30, 36, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(62, 201, 184, 0.12);
+    }
+    .nav-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .nav-inner a {
+      color: var(--muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+    }
+    .nav-inner a:hover {
+      color: var(--text);
+      background: var(--surface);
+      text-decoration: none;
+    }
+    section { padding-top: 3.25rem; scroll-margin-top: 3.5rem; }
+    h2 {
+      font-family: var(--font-display); font-size: 1.75rem;
+      font-weight: 600; margin: 0 0 1rem; color: var(--sand);
+    }
+    h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 1.5rem 0 0.65rem; color: var(--text); }
+    h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.4rem; }
+    .lead { font-size: 1.12rem; color: var(--muted); margin: 0 0 1.5rem; }
+    hr.divider { border: none; border-top: 1px solid rgba(62,201,184,0.12); margin: 2rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 1rem 0; }
+    th, td { border: 1px solid rgba(62,201,184,0.15); padding: 0.65rem 0.75rem; text-align: left; }
+    th { background: var(--surface); color: var(--sand); font-weight: 600; }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--bg-soft); border-radius: var(--radius); border: 1px solid rgba(62,201,184,0.12); padding: 1.15rem 1.25rem; }
+    .card h3 { margin-top: 0; font-size: 1.05rem; }
+    .card ul { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+    .card li { margin-bottom: 0.35rem; }
+    .callout {
+      border-left: 4px solid var(--accent-dim); padding: 0.75rem 1rem;
+      margin: 1rem 0; background: rgba(62,201,184,0.08);
+      border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.95rem;
+    }
+    .callout-warn { border-left-color: var(--warning); background: rgba(244,162,97,0.08); }
+    .badge {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+      background: var(--surface); color: var(--muted);
+      padding: 0.25rem 0.6rem; border-radius: 6px;
+    }
+    .badge.warn { background: rgba(244,162,97,0.15); color: var(--warning); }
+    .badge.sand { background: rgba(232,213,181,0.15); color: var(--sand); }
+    ul, ol { padding-left: 1.25rem; }
+    li { margin-bottom: 0.3rem; }
+    strong { color: #fff; }
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .nav-inner { justify-content: flex-start; } .rate-widget { display: none; } }
+
+    #scroll-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #062a26; border: none;
+      font-size: 1.3rem; cursor: pointer; z-index: 999;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    #scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #scroll-top:hover { background: #52dfd0; }
+
+    .rate-widget {
+      position: fixed; bottom: 1.5rem; left: 1.5rem;
+      background: rgba(12,30,36,0.88); backdrop-filter: blur(8px);
+      border: 1px solid rgba(62,201,184,0.15);
+      border-radius: 10px; padding: 0.55rem 0.85rem;
+      font-size: 0.78rem; color: var(--muted); z-index: 999;
+      line-height: 1.6; white-space: nowrap;
+    }
+    .rate-widget span { color: var(--accent); font-weight: 600; }
+
+    footer {
+      margin-top: 3.5rem; padding-top: 2rem;
+      border-top: 1px solid rgba(62,201,184,0.15);
+      font-size: 0.88rem; color: var(--muted); text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <svg class="hero-wave" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <pattern id="wave" x="0" y="0" width="1440" height="900" patternUnits="userSpaceOnUse">
+          <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-1440 0" dur="6s" repeatCount="indefinite"/>
+          <path fill="#3ec9b8" fill-opacity="0.08" d="M0 520 Q360 470 720 520 T1440 520 L1440 900 L0 900 Z"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#wave)"/>
+    </svg>
+    <div class="hero-inner">
+      <p class="eyebrow">Связь · Навигация · Локальная информация</p>
+      <h1>Справочник яхтсмена<br>Lagoon 42 · Eden Island Marina</h1>
+      <p class="dates">14–21 ноября 2026</p>
+      <p style="margin:0 0 1rem; font-size:0.95rem; color:var(--muted); max-width:36rem;">
+        <a href="https://www.boataround.com/ru/yachta/lagoon-42-golden-bride" rel="noopener noreferrer">Lagoon 42 «Golden Bride» на Boataround</a>
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+        <a class="hero-cta" href="index.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">Смотреть маршрут</a>
+        <a class="hero-cta" href="nutrition.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">План питания</a>
+        <a class="hero-cta" href="#comm">Справка</a>
+      </div>
+    </div>
+  </header>
+  <nav class="nav-bar" aria-label="Разделы страницы">
+    <div class="nav-inner">
+      <a href="#comm">Связь</a>
+      <a href="#nav">Навигация</a>
+      <a href="#anchorages">Стоянки</a>
+      <a href="#emergency">Экстренное</a>
+      <a href="#local">Локальная инфа</a>
+      <a href="#customs">Таможня</a>
+    </div>
+  </nav>
+  <main class="wrap">
+
+    <!-- ============================== -->
+    <!-- 1. СВЯЗЬ -->
+    <!-- ============================== -->
+    <section id="comm">
+      <h2>Связь и интернет</h2>
+      <p class="lead">SIM-карты, eSIM, покрытие, VHF — всё, чтобы оставаться на связи.</p>
+
+      <h3>Мобильные операторы</h3>
+      <p>На Сейшелах два оператора: <strong>Airtel</strong> и <strong>Cable &amp; Wireless (C&amp;W)</strong>. Оба предоставляют LTE с покрытием на Маэ, Праслине и Ла-Диге. Airtel — крупнейший, у C&amp;W чуть лучше покрытие на удалённых островах. SIM-карта у обоих — <strong>100 SCR</strong> (~$7). Купить можно в аэропорту (стойки работают ежедневно) или в фирменных магазинах.</p>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>Airtel</h3>
+          <table>
+            <tr><th>Пакет</th><th>Цена</th><th>Срок</th></tr>
+            <tr><td>5 ГБ</td><td>297 SCR</td><td>21 день</td></tr>
+            <tr><td>10 ГБ</td><td>⭐ 497 SCR</td><td>21 день</td></tr>
+            <tr><td>15 ГБ</td><td>797 SCR</td><td>30 дней</td></tr>
+            <tr><td>30 ГБ</td><td>⭐ 999 SCR</td><td>30 дней</td></tr>
+            <tr><td>70 ГБ</td><td>1 999 SCR</td><td>30 дней</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Cable &amp; Wireless</h3>
+          <table>
+            <tr><th>Пакет</th><th>Цена</th><th>Срок</th></tr>
+            <tr><td>5 ГБ</td><td>399 SCR</td><td>30 дней</td></tr>
+            <tr><td>7 ГБ</td><td>549 SCR</td><td>30 дней</td></tr>
+            <tr><td>10 ГБ</td><td>⭐ 749 SCR</td><td>30 дней</td></tr>
+            <tr><td>12 ГБ</td><td>849 SCR</td><td>30 дней</td></tr>
+            <tr><td>65 ГБ</td><td>1 699 SCR</td><td>30 дней</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Совет:</strong> для 8 человек на неделю достаточно 5–10 ГБ с раздачей через hotspot. Оба оператора позволяют раздачу. Покупайте SIM в аэропорту по прилёте — сразу активируете.
+      </div>
+
+      <h3>eSIM</h3>
+      <p>Можно купить и установить заранее — интернет появится сразу после посадки. Все работают через сети Airtel / C&amp;W.</p>
+      <table>
+        <tr><th>Провайдер</th><th>Цена от</th><th>Объём</th><th>Срок</th></tr>
+        <tr><td>Airalo</td><td>⭐ $8,00</td><td>1–20 ГБ</td><td>7–30 дней</td></tr>
+        <tr><td>Orange Travel</td><td>€13</td><td>2–50 ГБ</td><td>30 дней</td></tr>
+        <tr><td>SimOptions</td><td>$34</td><td>1–10 ГБ</td><td>7–31 день</td></tr>
+        <tr><td>Saily (NordVPN)</td><td>⭐ $8,00</td><td>1–10 ГБ</td><td>7–30 дней</td></tr>
+        <tr><td>Nomad</td><td>⭐ $8,00</td><td>1–20 ГБ</td><td>7–45 дней</td></tr>
+        <tr><td>Cellesim</td><td>$12,60</td><td>1–20 ГБ</td><td>7–30 дней</td></tr>
+      </table>
+
+      <h3>Покрытие по островам</h3>
+      <table>
+        <tr><th>Остров</th><th>LTE</th><th>Примечание</th></tr>
+        <tr><td>Маэ (Eden Island, Виктория)</td><td>✅ отлично</td><td>Полное покрытие у обоих операторов</td></tr>
+        <tr><td>Праслин (Anse Volbert, Baie Ste Anne)</td><td>✅ хорошо</td><td>Уверенный приём в населённых пунктах</td></tr>
+        <tr><td>Ла-Диг (La Passe)</td><td>✅ хорошо</td><td>LTE в посёлке, на пляжах слабее</td></tr>
+        <tr><td>Кюрьёз</td><td>⚠️ местами</td><td>Нестабильно, скачайте карты заранее</td></tr>
+        <tr><td>Сен-Пьер</td><td>❌ нет</td><td>Нет покрытия</td></tr>
+        <tr><td>Фелисите</td><td>⚠️ слабый</td><td>Может ловить сигнал с Праслина</td></tr>
+      </table>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============================== -->
+    <!-- 2. НАВИГАЦИЯ И БЕЗОПАСНОСТЬ -->
+    <!-- ============================== -->
+    <section id="nav">
+      <h2>Навигация и безопасность</h2>
+      <p class="lead">VHF-каналы, якорные стоянки, экстренные контакты, правила.</p>
+
+      <h3>VHF-рация</h3>
+      <table>
+        <tr><th>Канал</th><th>Частота</th><th>Назначение</th></tr>
+        <tr><td><strong>16</strong></td><td>156.800 МГц</td><td>Бедствие, срочность, безопасность — <strong>основной канал</strong>. Обязательное прослушивание на ходу. Вызов Harbour Control при входе/выходе из Port Victoria.</td></tr>
+        <tr><td><strong>14</strong></td><td>156.700 МГц</td><td>Короткая дистанция при входе/выходе из Eden Island Marina.</td></tr>
+        <tr><td><strong>09</strong></td><td>156.450 МГц</td><td>Рабочий канал для связи с другими судами (после вызова на 16).</td></tr>
+        <tr><td><strong>70</strong></td><td>156.525 МГц</td><td>DSC (цифровой избирательный вызов) — только данные, голос запрещён.</td></tr>
+      </table>
+      <div class="callout">
+        <strong>Порядок вызова Harbor Control (Port Victoria):</strong> позвонить на VHF 16 минимум за 2 часа до входа, запросить указания по якорной стоянке или швартовке.
+      </div>
+
+      <h3>Экстренные контакты</h3>
+      <table>
+        <tr><th>Служба</th><th>Телефон</th><th>VHF</th></tr>
+        <tr><td>Полиция / Пожар / Скорая</td><td><strong>999</strong></td><td>—</td></tr>
+        <tr><td>Скорая (отдельно)</td><td><strong>151</strong></td><td>—</td></tr>
+        <tr><td>Служба спасения (мобильные)</td><td><strong>112</strong></td><td>—</td></tr>
+        <tr><td>Береговая охрана (Coast Guard)</td><td><strong>422 44 11</strong></td><td>VHF 16</td></tr>
+        <tr><td>Морская администрация (SMSA)</td><td><strong>4 224 866</strong></td><td>VHF 16</td></tr>
+        <tr><td>Seychelles Radio</td><td>+248 3 757 733</td><td>VHF 16</td></tr>
+      </table>
+      <p>Все экстренные номера работают 24/7. При звонке с мобильного сработает 999 или 112.</p>
+
+      <hr class="divider" id="anchorages">
+
+      <h3>Якорные стоянки по маршруту</h3>
+
+      <h4>Маэ</h4>
+      <ul>
+        <li><strong>Eden Island Marina</strong> <a href="https://www.google.com/maps?q=-4.6311,55.4692" target="_blank" rel="noopener">4°37′52″S 55°28′09″E 🗺️</a> — основной порт приписки. Заправка, вода, электричество, супермаркет, рестораны. Швартовка у причала.</li>
+        <li><strong>Eden Anchorage</strong> (бесплатно) <a href="https://www.google.com/maps?q=-4.6297,55.4719" target="_blank" rel="noopener">4°37′47″S 55°28′19″E 🗺️</a> — якорная стоянка рядом с Eden Island. Хорошая защита. Глубина 4–8 м, песок.</li>
+        <li><strong>Сент-Энн Марин Парк</strong> <a href="https://www.google.com/maps?q=-4.6000,55.5000" target="_blank" rel="noopener">4°36′00″S 55°30′00″E 🗺️</a> — дневная стоянка, снорклинг. Вход ~10€/чел + 10€ за лодку (ночная стоянка).</li>
+        <li><strong>Beau Vallon</strong> <a href="https://www.google.com/maps?q=-4.6131,55.4272" target="_blank" rel="noopener">4°36′47″S 55°25′38″E 🗺️</a> — якорь на день. Песок 4–6 м. Рестораны, магазины на берегу.</li>
+      </ul>
+
+      <h4>Праслин</h4>
+      <ul>
+        <li><strong>Anse Volbert (Côte d'Or)</strong> <a href="https://www.google.com/maps?q=-4.3189,55.7264" target="_blank" rel="noopener">4°19′08″S 55°43′35″E 🗺️</a> — основная стоянка. Песок 4–6 м, NW защита. Рестораны, магазины вдоль пляжа.</li>
+        <li><strong>Baie Sainte Anne</strong> <a href="https://www.google.com/maps?q=-4.3333,55.7500" target="_blank" rel="noopener">4°20′00″S 55°45′00″E 🗺️</a> — защищённая бухта, можно встать на буй при входе в порт. Заправка и вода у причала (5 мин пешком).</li>
+        <li><strong>Anse Lazio</strong> <a href="https://www.google.com/maps?q=-4.2869,55.6981" target="_blank" rel="noopener">4°17′13″S 55°41′53″E 🗺️</a> — дневная стоянка, одна из красивейших бухт. Неустойчива при SE ветре. Глубина 4–6 м.</li>
+      </ul>
+
+      <h4>Ла-Диг</h4>
+      <ul>
+        <li><strong>La Passe anchorage</strong> <a href="https://www.google.com/maps?q=-4.3556,55.8372" target="_blank" rel="noopener">4°21′20″S 55°50′14″E 🗺️</a> — бесплатно, но может быть зыбко. Швартовка кормой к пирсу (med-moor) — заведите длинные швартовы, дистанция до берега большая.</li>
+        <li>В бухте помещается 3–4 яхты. Если занято — вставайте на якорь вне фарватера парома.</li>
+      </ul>
+
+      <h4>Кюрьёз</h4>
+      <ul>
+        <li><strong>Baie Laraie</strong> <a href="https://www.google.com/maps?q=-4.2817,55.7256" target="_blank" rel="noopener">4°16′54″S 55°43′32″E 🗺️</a> — защищённая бухта с черепашьим заповедником. Только дневная стоянка. Вход в нацпарк: 200–250 SCR/чел + 250 SCR за лодку за ночь, если остаётесь.</li>
+      </ul>
+
+      <h4>Сен-Пьер</h4>
+      <ul>
+        <li><strong>Остров Сен-Пьер</strong> <a href="https://www.google.com/maps?q=-4.3561,55.7689" target="_blank" rel="noopener">4°21′22″S 55°46′08″E 🗺️</a> — небольшой островок-заповедник. Дневная стоянка для снорклинга. Ночная стоянка запрещена.</li>
+      </ul>
+
+      <h4>Фелисите</h4>
+      <ul>
+        <li><strong>Остров Фелисите</strong> <a href="https://www.google.com/maps?q=-4.3264,55.8781" target="_blank" rel="noopener">4°19′35″S 55°52′41″E 🗺️</a> — частный остров (отель). Нет общественных стоянок. Можно подойти на день к северной оконечности — уточняйте на месте.</li>
+      </ul>
+
+      <div class="callout callout-warn">
+        <strong>Ночные переходы запрещены</strong> — по правилам чартера необходимо быть на якоре/у причала минимум за час до заката. Планируйте переходы на первую половину дня.
+      </div>
+
+      <h3>Навигационные карты</h3>
+      <p>Рекомендуемые источники:</p>
+      <ul>
+        <li><strong>Navionics</strong> (приложение) — подробные карты внутренних островов, регулярные обновления.</li>
+        <li><strong>PredictWind</strong> — погода, ветер, волнение на 7–16 дней.</li>
+        <li><strong>Бумажные карты</strong> — на борту обычно есть набор Admiralty: BA721 (подходы), BA722 (Port Victoria), BA724 (якорные стоянки), BA742 (Маэ, Праслин).</li>
+      </ul>
+
+      <h3>Сборы и разрешения</h3>
+      <table>
+        <tr><th>Парк / место</th><th>Сбор</th><th>Примечание</th></tr>
+        <tr><td>Сент-Энн Марин Парк</td><td>~10€/чел + 10€ лодка/ночь</td><td>08:30–17:00, после 17:00 — ночной тариф</td></tr>
+        <tr><td>Baie Ternay</td><td>~10€/чел</td><td>Только дневная стоянка</td></tr>
+        <tr><td>Кюрьёз (Curieuse)</td><td>~200–250 SCR/чел + 250 SCR лодка</td><td>Нацпарк, черепахи</td></tr>
+        <tr><td>Vallée de Mai (Праслин)</td><td>~15€/чел</td><td>Заповедник коко-де-мер</td></tr>
+        <tr><td>L'Union Estate (Ла-Диг)</td><td>~4€/чел</td><td>Проход к Anse Source d'Argent</td></tr>
+      </table>
+      <p>Сборы обычно принимают наличными в EUR, USD или SCR. Держите мелкие купюры.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============================== -->
+    <!-- 3. ЛОКАЛЬНАЯ ИНФОРМАЦИЯ -->
+    <!-- ============================== -->
+    <section id="local">
+      <h2>Локальная информация</h2>
+      <p class="lead">Валюта, чаевые, культура, транспорт, полезные мелочи.</p>
+
+      <h3>Валюта</h3>
+      <ul>
+        <li><strong>Официальная валюта:</strong> сейшельская рупия (SCR, ₨).</li>
+        <li><strong>Курс (май 2026):</strong> 1 USD ≈ 14,0 SCR; 1 EUR ≈ 15,2 SCR.</li>
+        <li><strong>Наличные:</strong> евро и доллары часто принимают в отелях, крупных ресторанах и туристических магазинах, но по невыгодному курсу. Лучше менять в банках или официальных обменных пунктах (Bureau de Change).</li>
+        <li><strong>Банкоматы:</strong> есть в аэропорту, на Маэ (Виктория, Eden Island), Праслине и Ла-Диге. Выдают только SCR. Иногда заканчиваются — снимайте заранее.</li>
+        <li><strong>Карты:</strong> Visa/Mastercard принимают в отелях, крупных супермаркетах (STC, Spar) и ресторанах. На рынках, в такси и мелких лавках — только наличные.</li>
+      </ul>
+
+      <h3>Чаевые</h3>
+      <ul>
+        <li><strong>Рестораны:</strong> 5–10% от счёта, если сервисный сбор не включён (проверьте чек).</li>
+        <li><strong>Такси:</strong> округление вверх до удобной суммы.</li>
+        <li><strong>Гиды / портье:</strong> 50–100 SCR за услугу.</li>
+      </ul>
+
+      <h3 id="customs">Таможня и ввоз</h3>
+      <h4>Беспошлинный ввоз (на взрослого старше 18 лет):</h4>
+      <ul>
+        <li>Алкоголь: 2 л до 16% + 2 л крепче 16%</li>
+        <li>Табак: 200 сигарет или 250 г табака</li>
+        <li>Духи: 200 мл</li>
+        <li>Прочие товары: на сумму до 15 000 SCR (~$1 030), включая один электронный предмет (телефон, планшет, ноутбук)</li>
+      </ul>
+      <h4>Запрещено ввозить:</h4>
+      <ul>
+        <li>Наркотики (включая каннабис), психотропные вещества, стероиды</li>
+        <li>Оружие и боеприпасы</li>
+        <li>Военная форма, камуфляж</li>
+        <li>Порнография</li>
+        <li>Контрафактная продукция</li>
+        <li>Фрукты и овощи (для частных лиц)</li>
+        <li>Радиооборудование и спутниковые телефоны (требуется разрешение)</li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Внимание:</strong> за ввоз наркотиков — вплоть до пожизненного заключения. Каннабис и его производные <strong>запрещены</strong> полностью. Лекарства по рецепту — только в оригинальной упаковке с рецептом.
+      </div>
+      <p>Сумму наличных свыше 50 000 SCR (~$3 500) необходимо декларировать на въезде и выезде.</p>
+
+      <h3>Культура и этикет</h3>
+      <ul>
+        <li><strong>Язык:</strong> официальные — креольский (сешельва), английский, французский. Английский понимают везде.</li>
+        <li><strong>Одежда:</strong> на пляже — купальник/шорты. В городах и ресторанах — прикрытые плечи и колени. Топлес на большинстве пляжей неприемлем, нудизм запрещён.</li>
+        <li><strong>Фото:</strong> спрашивайте разрешение, прежде чем снимать местных жителей.</li>
+        <li><strong>Окружающая среда:</strong> запрещено вывозить кораллы, ракушки, песок, черепашьи панцири. Используйте риф-безопасный солнцезащитный крем.</li>
+        <li><strong>Приветствие:</strong> улыбка и «Bonzour» (креольск.) или «Bonjour» / «Hello» — стандарт.</li>
+      </ul>
+
+      <h3>Транспорт на островах</h3>
+      <ul>
+        <li><strong>Автобусы:</strong> ходят по Маэ, Праслину и Ла-Диге. Билет ~5 SCR.</li>
+        <li><strong>Паромы:</strong> регулярные рейсы между Маэ–Праслин–Ла-Диг (Cats Cat Cocos). Время в пути: Маэ→Праслин ~1 ч, Праслин→Ла-Диг ~30 мин.</li>
+        <li><strong>Такси:</strong> от аэропорта до Eden Island — примерно 20–35€ (~300–500 SCR) по счётчику или по фиксированной цене. При посадке убедитесь, что счётчик включён, или договоритесь о цене заранее.</li>
+        <li><strong>Аренда авто:</strong> возможно на Маэ и Праслине. Права нужны национальные + International Driving Permit (IDP) желательно.</li>
+        <li><strong>Велопрокат:</strong> на Ла-Диге (~500 SCR/день) — лучший способ передвижения.</li>
+      </ul>
+
+      <h3>Питание и вода</h3>
+      <ul>
+        <li><strong>Водопроводная вода:</strong> на Сейшелах очищенная и безопасная в городах, но на яхте лучше использовать бутилированную или кипячёную. На борту есть опреснитель (watermaker), но для питья рекомендуется запас бутылок.</li>
+        <li><strong>Розетки:</strong> британский стандарт (Type G, 240V). Возьмите переходник, если у вас евро-вилка.</li>
+      </ul>
+
+      <h3>Сувениры</h3>
+      <ul>
+        <li>Ваниль, корица, кокосовое масло — местные продукты.</li>
+        <li>Коко-де-мер (морской кокос) — для вывоза требуется сертификат (CITES). Не покупайте без документов!</li>
+        <li>Черепаховый панцирь — запрещён к вывозу.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Полезные приложения на телефон:</strong> Navionics / iSailor (карты), PredictWind / Windy (погода), Maps.me (офлайн-карты островов), Bolt (такси, есть на Маэ).
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p style="margin:0;">Связь · Навигация · Локальная информация · Eden Island Marina · 14–21 ноября 2026</p>
+    <p style="margin:0.5rem 0 0;font-size:0.78rem;">Информация проверена по состоянию на май 2026. Всегда уточняйте актуальные тарифы и правила на месте.</p>
+  </footer>
+
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
+  <div class="rate-widget" id="rate-widget">Загрузка курса…</div>
+
+  <script>
+    async function updateRates() {
+      try {
+        var r = await fetch('https://open.er-api.com/v6/latest/USD');
+        var d = await r.json();
+        var usd = d.rates.SCR, eur = d.rates.SCR / d.rates.EUR, rub = d.rates.RUB / d.rates.SCR;
+        document.getElementById('rate-widget').innerHTML =
+          '<span>1 USD</span> = ' + usd.toFixed(1) + ' SCR · <span>1 EUR</span> = ' + eur.toFixed(1) + ' SCR · <span>1 SCR</span> = ' + rub.toFixed(1) + ' RUB';
+      } catch(e) { document.getElementById('rate-widget').innerHTML = 'Курс недоступен'; }
+    }
+    updateRates();
+    setInterval(updateRates, 3600000);
+  </script>
+
+  <script>
+    window.addEventListener('scroll', function () {
+      document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 500);
+    });
+  </script>
+</body>
+</html>

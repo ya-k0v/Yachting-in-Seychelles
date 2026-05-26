@@ -7,7 +7,7 @@
   <meta name="description" content="План питания, закупка продуктов и рынок на Сейшелах для экипажа Lagoon 42. Цены, супермаркеты, рестораны, недельный бюджет.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=block" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <style>
     :root {
@@ -115,12 +115,6 @@
     .hero-cta:hover {
       background: #52dfd0;
       text-decoration: none;
-    }
-
-    .hero-ref {
-      margin: 0 0 1rem;
-      font-size: 0.95rem;
-      color: var(--muted);
     }
 
     /* Nav */
@@ -400,12 +394,17 @@
       margin-top: 0.2rem;
     }
 
+    a[href*="google.com/maps"] {
+      text-decoration: none;
+    }
+    a[href*="google.com/maps"]:hover {
+      text-decoration: none;
+    }
     a.map-inline {
       color: var(--accent);
       font-size: 0.75rem;
       font-weight: 400;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      text-decoration: none;
       white-space: nowrap;
     }
     a.map-inline:hover {
@@ -531,6 +530,7 @@
       .meal-grid { grid-template-columns: 1fr; }
       .nav-inner { justify-content: flex-start; }
       th, td { font-size: 0.82rem; padding: 0.45rem 0.5rem; }
+      .rate-widget { display: none; }
     }
 
     footer {
@@ -541,6 +541,28 @@
       color: var(--muted);
       text-align: center;
     }
+
+    #scroll-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #062a26; border: none;
+      font-size: 1.3rem; cursor: pointer; z-index: 999;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    #scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #scroll-top:hover { background: #6dd5c4; }
+
+    .rate-widget {
+      position: fixed; bottom: 1.5rem; left: 1.5rem;
+      background: rgba(12,30,36,0.88); backdrop-filter: blur(8px);
+      border: 1px solid rgba(62,201,184,0.15);
+      border-radius: 10px; padding: 0.55rem 0.85rem;
+      font-size: 0.78rem; color: var(--muted); z-index: 999;
+      line-height: 1.6; white-space: nowrap;
+    }
+    .rate-widget span { color: var(--accent); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -556,19 +578,21 @@
       <rect width="100%" height="100%" fill="url(#wave)"/>
     </svg>
     <div class="hero-inner">
-      <p class="eyebrow">Питание · Провизия · Бюджет</p>
-      <h1>Nutrition Plan<br>Продукты на борт</h1>
-      <p class="dates">Сейшельские острова · 14–21 ноября 2026</p>
-      <p class="hero-ref">
-        <a href="index.html">← Маршрут</a>
-        · <a href="https://www.boataround.com/ru/yachta/lagoon-42-golden-bride" rel="noopener noreferrer">Lagoon 42 «Golden Bride» на Boataround</a>
+      <p class="eyebrow">Провизия и питание · Рестораны · Бюджет</p>
+      <h1>План питания<br>Lagoon 42 · Eden Island Marina</h1>
+      <p class="dates">14–21 ноября 2026</p>
+      <p style="margin:0 0 1rem; font-size:0.95rem; color:var(--muted); max-width:36rem;">
+        <a href="https://www.boataround.com/ru/yachta/lagoon-42-golden-bride" rel="noopener noreferrer">Lagoon 42 «Golden Bride» на Boataround</a>
       </p>
-      <a class="hero-cta" href="#overview">План питания</a>
-      <a class="hero-cta" href="index.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);margin-left:0.75rem;">Смотреть маршрут</a>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+        <a class="hero-cta" href="index.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">Смотреть маршрут</a>
+        <a class="hero-cta" href="#overview">План питания</a>
+        <a class="hero-cta" href="info.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);">Справка</a>
+      </div>
     </div>
   </header>
 
-  <nav class="nav-bar" aria-label="Разделы">
+  <nav class="nav-bar" aria-label="Разделы страницы">
     <div class="nav-inner">
       <a href="#overview">Обзор</a>
       <a href="#market">Магазины</a>
@@ -627,8 +651,8 @@
 
       <h3>Курс валюты (май 2026)</h3>
       <p>
-        1 USD ≈ 14,5–15,5 SCR (сейшельских рупий). На островах принимают карты, но для мелких рынков и лоточников
-        лучше иметь наличные SCR. Крупные супермаркеты (STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a>, Spar · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a>, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a>) принимают карты Visa/Mastercard.
+        1 USD ≈ 14,0–15,0 SCR (сейшельских рупий). На островах принимают карты, но для мелких рынков и лоточников
+        лучше иметь наличные SCR. Крупные супермаркеты (STC · <a class="map-inline" href="https://www.google.com/maps?q=STC+Hypermarket+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a>, Spar · <a class="map-inline" href="https://www.google.com/maps?q=Spar+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a>, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a>) принимают карты Visa/Mastercard.
       </p>
     </section>
 
@@ -640,7 +664,7 @@
       <p>
         Виктория и Eden Island — лучшие места для закупки на неделю. В первый день (14 ноября)
         выделите 2–3 часа на провизию. Посетите центральный рынок
-        <strong>Sir Selwyn Selwyn-Clarke Market</strong> (свежая рыба, фрукты, овощи, специи, ежедневно с 05:30) · <a href="https://www.google.com/maps?q=-4.619,55.451" target="_blank" rel="noopener">показать на карте</a>.
+        <strong>Sir Selwyn Selwyn-Clarke Market</strong> (свежая рыба, фрукты, овощи, специи, ежедневно с 05:30) · <a href="https://www.google.com/maps?q=Sir+Selwyn+Selwyn-Clarke+Market+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a>.
         <strong style="color:#e76f51;">⚠ Временно</strong> — рынок переехал в бывшее здание STC (рядом с оригиналом) на время реконструкции. Ориентируйтесь по указателям.
       </p>
       <p style="margin-top:-0.5rem;">
@@ -653,47 +677,47 @@
           <span class="shop-name">Spar Eden Island</span>
           <span class="badge store">доставка на яхту</span>
           <span class="shop-loc">Eden Plaza, Eden Island · 5 мин пешком от причала</span>
-          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 8:00–18:00. Ближайший к марине · <a href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 434 6838. Доставка на борт.</span>
+          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 8:00–18:00. Ближайший к марине · <a href="https://www.google.com/maps?q=Spar+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a> · Тел. +248 434 6838. Доставка на борт.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">STC Hyper Market</span>
           <span class="badge store">гос. цены</span>
           <span class="shop-loc">Bois de Rose Complex, Виктория</span>
-          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 9:00–13:00 · <a href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 428 5000. Крупнейший выбор, базовые цены.</span>
+          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 9:00–13:00 · <a href="https://www.google.com/maps?q=STC+Hypermarket+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> · Тел. +248 428 5000. Крупнейший выбор, базовые цены.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">ISPC Yacht Supplies</span>
           <span class="badge store">яхтенное снабжение</span>
           <span class="shop-loc">Bois de Rose Ave, SIBA Zone, Виктория</span>
-          <span class="shop-note">Профессиональное провизионное обслуживание яхт. 7 000+ товаров. Заказ онлайн с доставкой на судно. Французские сыры, вина, свежие продукты. Пн–Пт 8:00–17:00, Сб 9:00–13:00 · <a href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 438 9200.</span>
+          <span class="shop-note">Профессиональное провизионное обслуживание яхт. 7 000+ товаров. Заказ онлайн с доставкой на судно. Французские сыры, вина, свежие продукты. Пн–Пт 8:00–17:00, Сб 9:00–13:00 · <a href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> · Тел. +248 438 9200.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">Mohan Shopping Centre</span>
           <span class="shop-loc">Plaisance, Виктория</span>
-          <span class="shop-note">8:00–22:00 · <a href="https://www.google.com/maps?q=Mohan+Shopping+Centre+Plaisance+Victoria+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Доставка: тел. +248 261 0445. Близко к Eden Island.</span>
+          <span class="shop-note">8:00–22:00 · <a href="https://www.google.com/maps?q=Mohan+Shopping+Centre+Plaisance+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> · Доставка: тел. +248 261 0445. Близко к Eden Island.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">Chop Shop (GSC)</span>
           <span class="badge store">премиум-мясо</span>
           <span class="shop-loc">Beau Vallon + Anse Royale + Point Laure</span>
-          <span class="shop-note">Свежее мясо, стейки, собственная пекарня. <a href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">Beau Vallon на карте</a> · Тел. +248 278 1781.</span>
+          <span class="shop-note">Свежее мясо, стейки, собственная пекарня. <a href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">🗺️</a> · Тел. +248 278 1781.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">GOPI Supermarket</span>
           <span class="shop-loc">Providence, Mahé</span>
-          <span class="shop-note">Широкий выбор импортных брендов, есть доставка · <a href="https://www.google.com/maps?q=GOPI+Supermarket+Providence+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 437 3737.</span>
+          <span class="shop-note">Широкий выбор импортных брендов, есть доставка · <a href="https://www.google.com/maps?q=GOPI+Supermarket+Providence+Seychelles" target="_blank" rel="noopener">🗺️</a> · Тел. +248 437 3737.</span>
         </div>
 
         <div class="shop-item">
           <span class="shop-name">O'quay Shop Seychelles</span>
           <span class="badge store">онлайн-заказ</span>
           <span class="shop-loc">доставка на яхту в Eden Island Marina</span>
-          <span class="shop-note">Специализированный онлайн-сервис провизии для яхт. Заказ заранее с сайта <a href="https://www.oquayshopseychelles.com/fr/" target="_blank" rel="noopener">oquayshopseychelles.com</a> — всё ждёт на борту по прибытии. Удобная альтернатива самостоятельной закупке · <a href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">Eden Island на карте</a>.</span>
+          <span class="shop-note">Специализированный онлайн-сервис провизии для яхт. Заказ заранее с сайта <a href="https://www.oquayshopseychelles.com/fr/" target="_blank" rel="noopener">oquayshopseychelles.com</a> — всё ждёт на борту по прибытии. Удобная альтернатива самостоятельной закупке · <a href="https://www.google.com/maps?q=Eden+Island+Marina+Seychelles" target="_blank" rel="noopener">🗺️</a>.</span>
         </div>
       </div>
 
@@ -703,12 +727,12 @@
           <span class="shop-name">STC Mini Market</span>
           <span class="badge store">те же цены что на Маэ</span>
           <span class="shop-loc">Eve Island</span>
-          <span class="shop-note">Пн–Пт 8:00–17:00, Сб 8:00–15:00 · <a href="https://www.google.com/maps?q=-4.337,55.746" target="_blank" rel="noopener">показать на карте</a>. Цены как на Маэ — редкое преимущество.</span>
+          <span class="shop-note">Пн–Пт 8:00–17:00, Сб 8:00–15:00 · <a href="https://www.google.com/maps?q=STC+Mini+Market+Eve+Island+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a>. Цены как на Маэ — редкое преимущество.</span>
         </div>
         <div class="shop-item">
           <span class="shop-name">Baie Saint Anne Supermarket</span>
           <span class="shop-loc">Baie Sainte Anne</span>
-          <span class="shop-note">Базовый набор продуктов вблизи якорной стоянки · <a href="https://www.google.com/maps?q=-4.340,55.755" target="_blank" rel="noopener">показать на карте</a>.</span>
+          <span class="shop-note">Базовый набор продуктов вблизи якорной стоянки · <a href="https://www.google.com/maps?q=Baie+Saint+Anne+Supermarket+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a>.</span>
         </div>
       </div>
 
@@ -724,7 +748,7 @@
 
       <h3>Рынок свежих продуктов</h3>
       <p>
-        Рыбный рынок <strong>Sir Selwyn Selwyn-Clarke</strong> в Виктории — лучшее место для покупки тунца, ваху, луциана, марлина · <a href="https://www.google.com/maps?q=-4.619,55.451" target="_blank" rel="noopener">показать на карте</a>.
+        Рыбный рынок <strong>Sir Selwyn Selwyn-Clarke</strong> в Виктории — лучшее место для покупки тунца, ваху, луциана, марлина · <a href="https://www.google.com/maps?q=Sir+Selwyn+Selwyn-Clarke+Market+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a>.
         <strong style="color:#e76f51;">⚠ Временно</strong> — работает в бывшем здании STC (рядом) на время реконструкции с 2025 г.
         Часы работы: <strong>05:30–17:00</strong> ежедневно. Лучший выбор и цены — к открытию (06:00–08:00), пока не разобрали свежий улов и не припекает солнце.
         Торг уместен. Цены: целая рыба ~60–100 SCR/кг, филе тунца ~120–150 SCR/кг.
@@ -746,10 +770,10 @@
       <div id="resto-map" role="application" aria-label="Карта ресторанов Сейшел"></div>
       <p class="map-note">Карта © участники OpenStreetMap. Цвета маркеров: <strong style="color:#e76f51;">оранжевый</strong> — рестораны Маэ, <strong style="color:#3ec9b8;">бирюзовый</strong> — рестораны Праслин, <strong style="color:#e8d5b5;">песочный</strong> — рестораны Ла-Диг, <strong style="color:#f4d03f;">жёлтый</strong> — рынки/супермаркеты.</p>
 
-      <h3>📍 Eden Island / Маэ (Дни 1, 7)</h3>
+      <h3>🗺️ Eden Island / Маэ (Дни 1, 7)</h3>
 
       <div class="resto-card">
-        <h4>The Boardwalk Bar & Grill · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>The Boardwalk Bar & Grill · <a class="map-inline" href="https://www.google.com/maps?q=The+Boardwalk+Bar+%26+Grill+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.3 / 5</span>
           <span>356 отзывов</span>
@@ -763,7 +787,7 @@
       </div>
 
       <div class="resto-card">
-        <h4>Del Place Restaurant — <em>#1 в Виктории</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Del Place Restaurant — <em>#1 в Виктории</em> · <a class="map-inline" href="https://www.google.com/maps?q=Del+Place+Restaurant+Port+Glaud+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.5 / 5</span>
           <span>1 681 отзыв</span>
@@ -777,7 +801,7 @@
       </div>
 
       <div class="resto-card">
-        <h4>Maison Marengo · <a class="map-inline" href="https://www.google.com/maps?q=-4.704,55.524" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Maison Marengo · <a class="map-inline" href="https://www.google.com/maps?q=Maison+Marengo+Au+Cap+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.5 / 5</span>
           <span>350+ отзывов Google</span>
@@ -792,10 +816,10 @@
       </div>
 
       <div class="resto-card">
-        <h4>La Plage Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.600,55.432" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>La Plage Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=La+Plage+Restaurant+Beau+Vallon+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
-          <span class="resto-rating">★ 4.5 / 5</span>
-          <span>Beau Vallon</span>
+          <span class="resto-rating">★ 3.9 / 5</span>
+          <span>1 935 отзывов</span>
           <span class="resto-tag">интернациональная</span>
           <span class="resto-tag">пляж</span>
         </div>
@@ -805,10 +829,10 @@
         </p>
       </div>
 
-      <h3>📍 Праслин (Дни 3, 5)</h3>
+      <h3>🗺️ Праслин (Дни 3, 5)</h3>
 
       <div class="resto-card">
-        <h4>Café des Arts — <em>#1 на Праслине</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Café des Arts — <em>#1 на Праслине</em> · <a class="map-inline" href="https://www.google.com/maps?q=Caf%C3%A9+des+Arts+Anse+Volbert+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.4 / 5</span>
           <span>1 887 отзывов</span>
@@ -823,7 +847,7 @@
       </div>
 
       <div class="resto-card">
-        <h4>Pirogue Restaurant & Bar · <a class="map-inline" href="https://www.google.com/maps?q=-4.303,55.736" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Pirogue Restaurant & Bar · <a class="map-inline" href="https://www.google.com/maps?q=Pirogue+Restaurant+%26+Bar+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.2 / 5</span>
           <span>Google 4.2 · 442+ отзыва</span>
@@ -837,7 +861,7 @@
       </div>
 
       <div class="resto-card">
-        <h4>Legend · <a class="map-inline" href="https://www.google.com/maps?q=-4.277,55.703" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Legend · <a class="map-inline" href="https://www.google.com/maps?q=Legend+Restaurant+Lemuria+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.7 / 5</span>
           <span>87 отзывов</span>
@@ -850,10 +874,10 @@
         </p>
       </div>
 
-      <h3>📍 Ла-Диг (День 4)</h3>
+      <h3>🗺️ Ла-Диг (День 4)</h3>
 
       <div class="resto-card">
-        <h4>Le Nautique Waterfront Restaurant — <em>#1 на Ла-Диге</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Le Nautique Waterfront Restaurant — <em>#1 на Ла-Диге</em> · <a class="map-inline" href="https://www.google.com/maps?q=Le+Nautique+Waterfront+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.6 / 5</span>
           <span>392 отзыва</span>
@@ -867,7 +891,7 @@
       </div>
 
       <div class="resto-card">
-        <h4>Chez Jules Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Chez Jules Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=Chez+Jules+Restaurant+Anse+Banane+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
           <span class="resto-rating">★ 4.5 / 5</span>
           <span>1 400+ отзывов</span>
@@ -881,9 +905,9 @@
       </div>
 
       <div class="resto-card">
-        <h4>Le Repaire — Italian Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.354,55.833" target="_blank" rel="noopener">показать на карте</a></h4>
+        <h4>Le Repaire — Italian Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=Le+Repaire+Italian+Restaurant+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></h4>
         <div class="resto-meta">
-          <span class="resto-rating">★ 4.6 / 5</span>
+          <span class="resto-rating">★ 4.5 / 5</span>
           <span>1 191 отзыв</span>
           <span class="resto-tag">итальянская</span>
           <span class="resto-tag">бутик-отель</span>
@@ -926,10 +950,10 @@
             </div>
             <div class="meal-slot">
               <div class="label">Ужин</div>
-              <div class="food"><strong>The Boardwalk Bar & Grill</strong> (Eden Island, 100 м от причала) · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">карта</a></div>
+              <div class="food"><strong>The Boardwalk Bar & Grill</strong> (Eden Island, 100 м от причала) · <a class="map-inline" href="https://www.google.com/maps?q=The+Boardwalk+Bar+%26+Grill+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a></div>
             </div>
           </div>
-          <p class="day-meta"><strong>Задача:</strong> закупка провизии на неделю в STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> / Spar · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a> / ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a>. Проверка камбуза.</p>
+          <p class="day-meta"><strong>Задача:</strong> закупка провизии на неделю в STC · <a class="map-inline" href="https://www.google.com/maps?q=STC+Hypermarket+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> / Spar · <a class="map-inline" href="https://www.google.com/maps?q=Spar+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a> / ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a>. Проверка камбуза.</p>
         </div>
       </article>
 
@@ -961,7 +985,7 @@
       <article class="meal-day">
         <div class="meal-head">
           <span class="meal-date">16 ноя · пн</span>
-          <h3 class="meal-title">День 3 — Праслин, ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></h3>
+          <h3 class="meal-title">День 3 — Праслин, ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=Caf%C3%A9+des+Arts+Anse+Volbert+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></h3>
           <span class="badge eatat">ресторан ★</span>
         </div>
         <div class="meal-body">
@@ -976,17 +1000,17 @@
             </div>
             <div class="meal-slot">
               <div class="label">Ужин</div>
-              <div class="food"><strong>Café des Arts</strong> (Anse Volbert, пляж Côte d'Or) — морепродукты, закат · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></div>
+              <div class="food"><strong>Café des Arts</strong> (Anse Volbert, пляж Côte d'Or) — морепродукты, закат · <a class="map-inline" href="https://www.google.com/maps?q=Caf%C3%A9+des+Arts+Anse+Volbert+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></div>
             </div>
           </div>
-          <p class="day-meta"><em>Café des Arts:</em> #1 на Праслине · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a>. Casual Chic. Бронь обязательна. Средний чек 600–1 000 SCR/чел.</p>
+          <p class="day-meta"><em>Café des Arts:</em> #1 на Праслине · <a class="map-inline" href="https://www.google.com/maps?q=Caf%C3%A9+des+Arts+Anse+Volbert+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a>. Casual Chic. Бронь обязательна. Средний чек 600–1 000 SCR/чел.</p>
         </div>
       </article>
 
       <article class="meal-day">
         <div class="meal-head">
           <span class="meal-date">17 ноя · вт</span>
-          <h3 class="meal-title">День 4 — Ла-Диг, обед в Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a> / ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></h3>
+          <h3 class="meal-title">День 4 — Ла-Диг, обед в Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=Chez+Jules+Restaurant+Anse+Banane+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a> / ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=Le+Nautique+Waterfront+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></h3>
           <span class="badge eatat">ресторан ★</span>
         </div>
         <div class="meal-body">
@@ -997,14 +1021,14 @@
             </div>
             <div class="meal-slot">
               <div class="label">Обед</div>
-              <div class="food"><strong>Chez Jules</strong> (Anse Banane) — карри из осьминога / тунец, черепахи рядом · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a></div>
+              <div class="food"><strong>Chez Jules</strong> (Anse Banane) — карри из осьминога / тунец, черепахи рядом · <a class="map-inline" href="https://www.google.com/maps?q=Chez+Jules+Restaurant+Anse+Banane+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></div>
             </div>
             <div class="meal-slot">
               <div class="label">Ужин</div>
-              <div class="food"><strong>Le Nautique Waterfront</strong> (La Passe) — #1 на Ла-Диге, закат у воды · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></div>
+              <div class="food"><strong>Le Nautique Waterfront</strong> (La Passe) — #1 на Ла-Диге, закат у воды · <a class="map-inline" href="https://www.google.com/maps?q=Le+Nautique+Waterfront+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></div>
             </div>
           </div>
-          <p class="day-meta"><em>Le Nautique:</em> 4.6★, 392 отзыва · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a>. Лучший закат на острове. Бронировать за 2–3 дня.</p>
+          <p class="day-meta"><em>Le Nautique:</em> 4.6★, 392 отзыва · <a class="map-inline" href="https://www.google.com/maps?q=Le+Nautique+Waterfront+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a>. Лучший закат на острове. Бронировать за 2–3 дня.</p>
         </div>
       </article>
 
@@ -1054,14 +1078,14 @@
               <div class="food">До-ужин из остатков / лёгкая паста с морепродуктами</div>
             </div>
           </div>
-          <p class="day-meta"><em>Задача:</em> доесть скоропортящиеся продукты. Если возвращаетесь к Маэ — ужин в <strong>Maison Marengo</strong> (4.5★) · <a class="map-inline" href="https://www.google.com/maps?q=-4.704,55.524" target="_blank" rel="noopener">карта</a>.</p>
+          <p class="day-meta"><em>Задача:</em> доесть скоропортящиеся продукты. Если возвращаетесь к Маэ — ужин в <strong>Maison Marengo</strong> (4.5★) · <a class="map-inline" href="https://www.google.com/maps?q=Maison+Marengo+Au+Cap+Seychelles" target="_blank" rel="noopener">🗺️</a>.</p>
         </div>
       </article>
 
       <article class="meal-day">
         <div class="meal-head">
           <span class="meal-date">20 ноя · пт</span>
-          <h3 class="meal-title">День 7 — Заход в марину, ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></h3>
+          <h3 class="meal-title">День 7 — Заход в марину, ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=Del+Place+Restaurant+Port+Glaud+Seychelles" target="_blank" rel="noopener">🗺️</a></h3>
           <span class="badge eatat">ресторан ★</span>
         </div>
         <div class="meal-body">
@@ -1076,10 +1100,10 @@
             </div>
             <div class="meal-slot">
               <div class="label">Ужин</div>
-              <div class="food"><strong>Del Place Restaurant</strong> (Port Glaud) — #1 в Виктории, прощальный ужин · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></div>
+              <div class="food"><strong>Del Place Restaurant</strong> (Port Glaud) — #1 в Виктории, прощальный ужин · <a class="map-inline" href="https://www.google.com/maps?q=Del+Place+Restaurant+Port+Glaud+Seychelles" target="_blank" rel="noopener">🗺️</a></div>
             </div>
           </div>
-          <p class="day-meta"><em>Del Place:</em> 4.5★, 1 681 отзыв · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a>. Панорамный вид, креольская кухня. Трансфер из марины ~15 мин на такси.</p>
+          <p class="day-meta"><em>Del Place:</em> 4.5★, 1 681 отзыв · <a class="map-inline" href="https://www.google.com/maps?q=Del+Place+Restaurant+Port+Glaud+Seychelles" target="_blank" rel="noopener">🗺️</a>. Панорамный вид, креольская кухня. Трансфер из марины ~15 мин на такси.</p>
         </div>
       </article>
 
@@ -1093,8 +1117,8 @@
     <section id="shopping">
       <h2>Список закупок</h2>
       <p class="lead">
-        Полный список продуктов на <strong>8 человек / 7 дней</strong>. Можно заказать через ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a> с доставкой на яхту или купить
-        самостоятельно в STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> / Spar Eden Island · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a> в день заезда.
+        Полный список продуктов на <strong>8 человек / 7 дней</strong>. Можно заказать через ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> с доставкой на яхту или купить
+        самостоятельно в STC · <a class="map-inline" href="https://www.google.com/maps?q=STC+Hypermarket+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> / Spar Eden Island · <a class="map-inline" href="https://www.google.com/maps?q=Spar+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a> в день заезда.
       </p>
 
       <div class="two-col">
@@ -1200,7 +1224,7 @@
       <h2>Бюджет на провизию и примерные цены</h2>
       <p class="lead">
         Цены в сейшельских рупиях (SCR) и долларах США (USD, май 2026).
-        Разброс зависит от магазина: STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> — базовая цена, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a> / Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">карта</a> — премиум.
+        Разброс зависит от магазина: STC · <a class="map-inline" href="https://www.google.com/maps?q=STC+Hypermarket+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> — базовая цена, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">🗺️</a> / Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">🗺️</a> — премиум.
       </p>
 
       <h3>Цены на основные продукты</h3>
@@ -1220,7 +1244,7 @@
           <tr><td>Яйца, 12 шт.</td><td>48–78</td><td>$3,3–5,4</td><td>Местные дешевле</td></tr>
           <tr><td>Сыр местный, 1 кг</td><td>165–800</td><td>$11–55</td><td>Импортный — дорого, брать по 300–400 г</td></tr>
           <tr><td>Куриное филе, 1 кг</td><td>60–125</td><td>$4,1–8,6</td><td>Хорошее соотношение цена/качество</td></tr>
-          <tr><td>Говядина, 1 кг</td><td>100–250</td><td>$6,9–17,2</td><td>Премиум — Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">карта</a></td></tr>
+          <tr><td>Говядина, 1 кг</td><td>100–250</td><td>$6,9–17,2</td><td>Премиум — Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">🗺️</a></td></tr>
           <tr><td>Рыба свежая, 1 кг</td><td>60–120</td><td>$4,1–8,3</td><td>Лучшая цена на рынке Виктории</td></tr>
           <tr><td>Помидоры, 1 кг</td><td>50–110</td><td>$3,4–7,6</td><td>Зависит от сезона</td></tr>
           <tr><td>Бананы, 1 кг</td><td>25–65</td><td>$1,7–4,5</td><td>Местные — дёшево у лоточников</td></tr>
@@ -1287,12 +1311,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Такси SEZ → Eden Island</td><td>~300</td><td>$20</td></tr>
-          <tr><td>Обед на Ла-Диге (Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a>)</td><td>250–400</td><td>$17–28</td></tr>
-          <tr><td>Ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></td><td>600–1 000</td><td>$41–69</td></tr>
-          <tr><td>Ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></td><td>600–1 000</td><td>$41–69</td></tr>
-          <tr><td>Ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></td><td>500–900</td><td>$34–62</td></tr>
-          <tr><td>The Boardwalk Bar · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">карта</a></td><td>400–700</td><td>$28–48</td></tr>
+          <tr><td>Такси SEZ → Eden Island</td><td>~450</td><td>$30</td></tr>
+          <tr><td>Обед на Ла-Диге (Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=Chez+Jules+Restaurant+Anse+Banane+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a>)</td><td>250–400</td><td>$17–28</td></tr>
+          <tr><td>Ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=Caf%C3%A9+des+Arts+Anse+Volbert+Praslin+Seychelles" target="_blank" rel="noopener">🗺️</a></td><td>600–1 000</td><td>$41–69</td></tr>
+          <tr><td>Ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=Le+Nautique+Waterfront+La+Digue+Seychelles" target="_blank" rel="noopener">🗺️</a></td><td>600–1 000</td><td>$41–69</td></tr>
+          <tr><td>Ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=Del+Place+Restaurant+Port+Glaud+Seychelles" target="_blank" rel="noopener">🗺️</a></td><td>500–900</td><td>$34–62</td></tr>
+          <tr><td>The Boardwalk Bar · <a class="map-inline" href="https://www.google.com/maps?q=The+Boardwalk+Bar+%26+Grill+Eden+Island+Seychelles" target="_blank" rel="noopener">🗺️</a></td><td>400–700</td><td>$28–48</td></tr>
           <tr><td>Чаевые (необязательно, ~10%)</td><td>—</td><td>—</td></tr>
         </tbody>
       </table>
@@ -1393,7 +1417,7 @@
         <a href="index.html">← Маршрут яхтинга</a>
         · Lagoon 42 «Golden Bride» · 8 человек · 14–21 ноября 2026
       </p>
-      <p>Цены на основе данных Numbeo, TripAdvisor, Google Maps (май 2026). Курс: ~1 USD = 14,5 SCR (на май 2026, колебания 13,7–14,5).</p>
+      <p>Цены на основе данных Numbeo, TripAdvisor, Google Maps (май 2026). Курс: ~1 USD = 14,0 SCR (на май 2026, колебания 13,0–15,4).</p>
     </footer>
   </main>
 
@@ -1415,13 +1439,13 @@
         { name: "The Boardwalk Bar & Grill", ll: [-4.633, 55.467], icon: iconOrange, rating: "★ 4.3", desc: "Eden Island Marina" },
         { name: "Del Place Restaurant", ll: [-4.614, 55.428], icon: iconOrange, rating: "★ 4.5", desc: "#1 в Виктории · Port Glaud" },
         { name: "Maison Marengo", ll: [-4.704, 55.524], icon: iconOrange, rating: "★ 4.5", desc: "Au Cap · креольская" },
-        { name: "La Plage Restaurant", ll: [-4.600, 55.432], icon: iconOrange, rating: "★ 4.5", desc: "Beau Vallon · на пляже" },
+        { name: "La Plage Restaurant", ll: [-4.600, 55.432], icon: iconOrange, rating: "★ 3.9", desc: "1 935 отзывов · на пляже" },
         { name: "Café des Arts", ll: [-4.302, 55.735], icon: iconTeal, rating: "★ 4.4", desc: "#1 на Праслине · Anse Volbert" },
         { name: "Pirogue Restaurant & Bar", ll: [-4.303, 55.736], icon: iconTeal, rating: "★ 4.2", desc: "Côte d'Or · креольская" },
         { name: "Legend", ll: [-4.277, 55.703], icon: iconTeal, rating: "★ 4.7", desc: "Anse Kerlan · индийская" },
         { name: "Le Nautique Waterfront", ll: [-4.353, 55.833], icon: iconSand, rating: "★ 4.6", desc: "#1 на Ла-Диге · La Passe" },
         { name: "Chez Jules", ll: [-4.369, 55.856], icon: iconSand, rating: "★ 4.5", desc: "Anse Banane · креольская" },
-        { name: "Le Repaire", ll: [-4.354, 55.833], icon: iconSand, rating: "★ 4.6/5", desc: "La Passe · итальянская" },
+        { name: "Le Repaire", ll: [-4.354, 55.833], icon: iconSand, rating: "★ 4.5", desc: "La Passe · итальянская" },
         { name: "Sir Selwyn Selwyn-Clarke Market", ll: [-4.619, 55.451], icon: iconMarket, rating: "рыбный рынок", desc: "Виктория · ежедневно с 05:30" },
         { name: "STC Hyper Market", ll: [-4.6295, 55.4604], icon: iconMarket, rating: "супермаркет", desc: "Bois de Rose · крупнейший выбор" },
         { name: "Spar Eden Island", ll: [-4.6406, 55.4758], icon: iconMarket, rating: "супермаркет", desc: "Eden Plaza · 5 мин от причала" }
@@ -1438,5 +1462,28 @@
     })();
   </script>
 
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
+  <div class="rate-widget" id="rate-widget">Загрузка курса…</div>
+
+  <script>
+    async function updateRates() {
+      try {
+        var r = await fetch('https://open.er-api.com/v6/latest/USD');
+        var d = await r.json();
+        var usd = d.rates.SCR, eur = d.rates.SCR / d.rates.EUR, rub = d.rates.RUB / d.rates.SCR;
+        document.getElementById('rate-widget').innerHTML =
+          '<span>1 USD</span> = ' + usd.toFixed(1) + ' SCR · <span>1 EUR</span> = ' + eur.toFixed(1) + ' SCR · <span>1 SCR</span> = ' + rub.toFixed(1) + ' RUB';
+      } catch(e) { document.getElementById('rate-widget').innerHTML = 'Курс недоступен'; }
+    }
+    updateRates();
+    setInterval(updateRates, 3600000);
+  </script>
+
+  <script>
+    window.addEventListener('scroll', function () {
+      document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 500);
+    });
+  </script>
 </body>
 </html>
