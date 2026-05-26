@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Питание и провизия · Сейшелы · Яхтинг 2026</title>
+  <meta name="description" content="План питания, закупка продуктов и рынок на Сейшелах для экипажа Lagoon 42. Цены, супермаркеты, рестораны, недельный бюджет.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    :root {
+      --bg: #0c1e24;
+      --bg-soft: #132a32;
+      --surface: #1a3842;
+      --text: #e8f4f2;
+      --muted: #9db8b5;
+      --accent: #3ec9b8;
+      --accent-dim: #2a9d8f;
+      --sand: #e8d5b5;
+      --warning: #f4a261;
+      --radius: 14px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Source Sans 3", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 1.25rem 3rem;
+      background:
+        linear-gradient(180deg, rgba(12, 30, 36, 0.15) 0%, rgba(12, 30, 36, 0.92) 78%);
+      border-bottom: 1px solid rgba(62, 201, 184, 0.15);
+      overflow: hidden;
+    }
+
+    .hero-wave {
+      position: absolute;
+      inset: -10px 0;
+      width: 100%;
+      height: calc(100% + 20px);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2.1rem, 5vw, 3.25rem);
+      line-height: 1.12;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .dates {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--sand);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #062a26;
+      font-weight: 600;
+      padding: 0.75rem 1.35rem;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-cta:hover {
+      background: #52dfd0;
+      text-decoration: none;
+    }
+
+    .hero-ref {
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* Nav */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12, 30, 36, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(62, 201, 184, 0.12);
+    }
+
+    .nav-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .nav-inner a {
+      color: var(--muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .nav-inner a:hover {
+      color: var(--text);
+      background: var(--surface);
+      text-decoration: none;
+    }
+
+    section {
+      padding-top: 3.25rem;
+      scroll-margin-top: 3.5rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0 0 1rem;
+      color: var(--sand);
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.65rem;
+      color: var(--text);
+    }
+
+    .lead {
+      font-size: 1.12rem;
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .stat {
+      background: var(--bg-soft);
+      border: 1px solid rgba(62, 201, 184, 0.12);
+      border-radius: var(--radius);
+      padding: 1.1rem 1rem;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .stat span {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1rem 0 0;
+    }
+
+    .pill {
+      background: var(--surface);
+      border: 1px solid rgba(62, 201, 184, 0.2);
+      border-radius: 999px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .pill.restaurant {
+      background: rgba(232, 213, 181, 0.12);
+      border-color: rgba(232, 213, 181, 0.25);
+      color: var(--sand);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid rgba(62, 201, 184, 0.15);
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface);
+      color: var(--sand);
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Map */
+    #resto-map {
+      height: 440px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(62, 201, 184, 0.2);
+      margin: 1rem 0 0.5rem;
+      z-index: 1;
+    }
+
+    .map-note {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0 0 1rem;
+    }
+
+    /* Cards */
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid rgba(62, 201, 184, 0.12);
+      padding: 1.15rem 1.25rem;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.05rem;
+    }
+
+    .card ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .card li {
+      margin-bottom: 0.35rem;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-dim);
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      background: rgba(62, 201, 184, 0.08);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.95rem;
+    }
+
+    .callout-warn {
+      border-left-color: var(--warning);
+      background: rgba(244, 162, 97, 0.08);
+    }
+
+    .callout-restaurant {
+      border-left-color: var(--sand);
+      background: rgba(232, 213, 181, 0.06);
+    }
+
+    /* Price row */
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(62, 201, 184, 0.07);
+      font-size: 0.92rem;
+    }
+
+    .price-row:last-child {
+      border-bottom: none;
+    }
+
+    .price-row .item {
+      color: var(--text);
+    }
+
+    .price-row .scr {
+      color: var(--accent);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .price-row .usd {
+      color: var(--muted);
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0 0.2rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--sand);
+      border-top: 2px solid var(--accent-dim);
+      margin-top: 0.4rem;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .badge.store { background: rgba(62, 201, 184, 0.15); color: var(--accent); }
+    .badge.tip { background: rgba(244, 162, 97, 0.15); color: var(--warning); }
+    .badge.seafood { background: rgba(232, 213, 181, 0.15); color: var(--sand); }
+    .badge.eatat { background: rgba(232, 213, 181, 0.2); color: var(--sand); }
+
+    .shop-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.3rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .shop-item:last-child { border-bottom: none; }
+    .shop-name { font-weight: 600; }
+    .shop-loc { font-size: 0.85rem; color: var(--muted); }
+
+    .shop-note {
+      width: 100%;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    a.map-inline {
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 400;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      white-space: nowrap;
+    }
+    a.map-inline:hover {
+      color: #6dd5c4;
+    }
+
+    /* Restaurant cards */
+    .resto-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid rgba(232, 213, 181, 0.12);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1rem;
+    }
+
+    .resto-card:last-child { margin-bottom: 0; }
+    .resto-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin: 0 0 0.2rem;
+      color: var(--sand);
+    }
+
+    .resto-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .resto-rating {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .resto-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(232, 213, 181, 0.12);
+      color: var(--sand);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .resto-desc {
+      font-size: 0.92rem;
+      margin: 0.3rem 0 0;
+    }
+
+    /* Meal plan cards */
+    .meal-day {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid rgba(62, 201, 184, 0.1);
+      margin-bottom: 1.15rem;
+      overflow: hidden;
+    }
+
+    .meal-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 1rem 1.15rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .meal-date {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .meal-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .meal-body { padding: 0.85rem 1.15rem 1.15rem; }
+    .meal-body p { margin: 0.35rem 0; }
+
+    .meal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .meal-slot {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+    }
+
+    .meal-slot .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-dim);
+      font-weight: 600;
+    }
+
+    .meal-slot .food {
+      font-size: 0.92rem;
+      margin-top: 0.15rem;
+    }
+
+    .day-meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+
+    @media (max-width: 600px) {
+      .meal-grid { grid-template-columns: 1fr; }
+      .nav-inner { justify-content: flex-start; }
+      th, td { font-size: 0.82rem; padding: 0.45rem 0.5rem; }
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(62, 201, 184, 0.15);
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <svg class="hero-wave" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <pattern id="wave" x="0" y="0" width="1440" height="900" patternUnits="userSpaceOnUse">
+          <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-1440 0" dur="6s" repeatCount="indefinite"/>
+          <path fill="#3ec9b8" fill-opacity="0.08" d="M0 520 Q360 470 720 520 T1440 520 L1440 900 L0 900 Z"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#wave)"/>
+    </svg>
+    <div class="hero-inner">
+      <p class="eyebrow">Питание · Провизия · Бюджет</p>
+      <h1>Nutrition Plan<br>Продукты на борт</h1>
+      <p class="dates">Сейшельские острова · 14–21 ноября 2026</p>
+      <p class="hero-ref">
+        <a href="index.html">← Маршрут</a>
+        · <a href="https://www.boataround.com/ru/yachta/lagoon-42-golden-bride" rel="noopener noreferrer">Lagoon 42 «Golden Bride» на Boataround</a>
+      </p>
+      <a class="hero-cta" href="#overview">План питания</a>
+      <a class="hero-cta" href="index.html" style="background:transparent;color:var(--accent);border:1px solid var(--accent);margin-left:0.75rem;">Смотреть маршрут</a>
+    </div>
+  </header>
+
+  <nav class="nav-bar" aria-label="Разделы">
+    <div class="nav-inner">
+      <a href="#overview">Обзор</a>
+      <a href="#market">Магазины</a>
+      <a href="#restaurants">Рестораны</a>
+      <a href="#mealplan">Меню</a>
+      <a href="#shopping">Список</a>
+      <a href="#budget">Бюджет</a>
+      <a href="#tips">Советы</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+
+    <!-- ===== OVERVIEW ===== -->
+    <section id="overview">
+      <h2>Обзор питания</h2>
+      <p class="lead">
+        Сейшелы — импортозависимая страна: ~90% продуктов ввозятся. Цены на 20–50% выше европейских.
+        Однако местная рыба (тунец, ваху, марлин, луциан) доступна и недорога. Кокосы, бананы, хлебное дерево,
+        манго и папайя — сезонные фрукты, которые можно купить у лоточников на островах.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>8 персон</strong>
+          <span>4 каюты · экипаж</span>
+        </div>
+        <div class="stat">
+          <strong>7 дней</strong>
+          <span>на борту</span>
+        </div>
+        <div class="stat">
+          <strong>~5 000–7 000 SCR</strong>
+          <span>провизия на неделю</span>
+        </div>
+        <div class="stat">
+          <strong>$350–500</strong>
+          <span>в долларах США</span>
+        </div>
+      </div>
+
+      <h3>Оснащение камбуза (Lagoon 42 Golden Bride, 2024)</h3>
+      <p>
+        Согласно карточке лодки на Boataround, катамаран оборудован: <strong>плита</strong>, <strong>духовка</strong>,
+        <strong>холодильник</strong>, <strong>морозильная камера</strong>, <strong>раковина</strong>. Гриль не указан — уточните при инвентаризации.
+        Генератор и кондиционер входят в оснащение, что позволяет готовить с комфортом даже в жаркий полдень.
+      </p>
+
+      <div class="pill-grid">
+        <span class="pill">Завтраки на борту</span>
+        <span class="pill">Обеды под парусом</span>
+        <span class="pill">Ужины на якоре</span>
+        <span class="pill restaurant">★ Выходы в рестораны</span>
+        <span class="pill">Свежая рыба</span>
+      </div>
+
+      <h3>Курс валюты (май 2026)</h3>
+      <p>
+        1 USD ≈ 14,5–15,5 SCR (сейшельских рупий). На островах принимают карты, но для мелких рынков и лоточников
+        лучше иметь наличные SCR. Крупные супермаркеты (STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a>, Spar · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a>, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a>) принимают карты Visa/Mastercard.
+      </p>
+    </section>
+
+    <!-- ===== MARKET & STORES ===== -->
+    <section id="market">
+      <h2>Рынок продуктов и магазины</h2>
+
+      <h3>Маэ (Mahé) — основная закупка</h3>
+      <p>
+        Виктория и Eden Island — лучшие места для закупки на неделю. В первый день (14 ноября)
+        выделите 2–3 часа на провизию. Посетите центральный рынок
+        <strong>Sir Selwyn Selwyn-Clarke Market</strong> (свежая рыба, фрукты, овощи, специи, ежедневно с 05:30) · <a href="https://www.google.com/maps?q=-4.619,55.451" target="_blank" rel="noopener">показать на карте</a>.
+        <strong style="color:#e76f51;">⚠ Временно</strong> — рынок переехал в бывшее здание STC (рядом с оригиналом) на время реконструкции. Ориентируйтесь по указателям.
+      </p>
+      <p style="margin-top:-0.5rem;">
+      </p>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <h3>Супермаркеты на Маэ</h3>
+
+        <div class="shop-item">
+          <span class="shop-name">Spar Eden Island</span>
+          <span class="badge store">доставка на яхту</span>
+          <span class="shop-loc">Eden Plaza, Eden Island · 5 мин пешком от причала</span>
+          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 8:00–18:00. Ближайший к марине · <a href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 434 6838. Доставка на борт.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">STC Hyper Market</span>
+          <span class="badge store">гос. цены</span>
+          <span class="shop-loc">Bois de Rose Complex, Виктория</span>
+          <span class="shop-note">Пн–Сб 8:00–19:00, Вс 9:00–13:00 · <a href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 428 5000. Крупнейший выбор, базовые цены.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">ISPC Yacht Supplies</span>
+          <span class="badge store">яхтенное снабжение</span>
+          <span class="shop-loc">Bois de Rose Ave, SIBA Zone, Виктория</span>
+          <span class="shop-note">Профессиональное провизионное обслуживание яхт. 7 000+ товаров. Заказ онлайн с доставкой на судно. Французские сыры, вина, свежие продукты. Пн–Пт 8:00–17:00, Сб 9:00–13:00 · <a href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 438 9200.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">Mohan Shopping Centre</span>
+          <span class="shop-loc">Plaisance, Виктория</span>
+          <span class="shop-note">8:00–22:00 · <a href="https://www.google.com/maps?q=Mohan+Shopping+Centre+Plaisance+Victoria+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Доставка: тел. +248 261 0445. Близко к Eden Island.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">Chop Shop (GSC)</span>
+          <span class="badge store">премиум-мясо</span>
+          <span class="shop-loc">Beau Vallon + Anse Royale + Point Laure</span>
+          <span class="shop-note">Свежее мясо, стейки, собственная пекарня. <a href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">Beau Vallon на карте</a> · Тел. +248 278 1781.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">GOPI Supermarket</span>
+          <span class="shop-loc">Providence, Mahé</span>
+          <span class="shop-note">Широкий выбор импортных брендов, есть доставка · <a href="https://www.google.com/maps?q=GOPI+Supermarket+Providence+Seychelles" target="_blank" rel="noopener">показать на карте</a> · Тел. +248 437 3737.</span>
+        </div>
+
+        <div class="shop-item">
+          <span class="shop-name">O'quay Shop Seychelles</span>
+          <span class="badge store">онлайн-заказ</span>
+          <span class="shop-loc">доставка на яхту в Eden Island Marina</span>
+          <span class="shop-note">Специализированный онлайн-сервис провизии для яхт. Заказ заранее с сайта <a href="https://www.oquayshopseychelles.com/fr/" target="_blank" rel="noopener">oquayshopseychelles.com</a> — всё ждёт на борту по прибытии. Удобная альтернатива самостоятельной закупке · <a href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">Eden Island на карте</a>.</span>
+        </div>
+      </div>
+
+      <h3>Праслин (Praslin)</h3>
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="shop-item">
+          <span class="shop-name">STC Mini Market</span>
+          <span class="badge store">те же цены что на Маэ</span>
+          <span class="shop-loc">Eve Island</span>
+          <span class="shop-note">Пн–Пт 8:00–17:00, Сб 8:00–15:00 · <a href="https://www.google.com/maps?q=-4.337,55.746" target="_blank" rel="noopener">показать на карте</a>. Цены как на Маэ — редкое преимущество.</span>
+        </div>
+        <div class="shop-item">
+          <span class="shop-name">Baie Saint Anne Supermarket</span>
+          <span class="shop-loc">Baie Sainte Anne</span>
+          <span class="shop-note">Базовый набор продуктов вблизи якорной стоянки · <a href="https://www.google.com/maps?q=-4.340,55.755" target="_blank" rel="noopener">показать на карте</a>.</span>
+        </div>
+      </div>
+
+      <h3>Ла-Диг (La Digue)</h3>
+      <p>
+        Ассортимент ограничен, цены выше. Берите всё основное с Маэ.
+        На острове есть небольшие магазины у Ла-Пасс и Гранд-Анс, но для полного обеда на 8 человек придётся переплатить.
+      </p>
+
+      <div class="callout">
+        <strong>Правило:</strong> основная закупка — <strong>14 ноября на Маэ</strong>. Докупать можно только свежую рыбу, фрукты, хлеб на островах.
+      </div>
+
+      <h3>Рынок свежих продуктов</h3>
+      <p>
+        Рыбный рынок <strong>Sir Selwyn Selwyn-Clarke</strong> в Виктории — лучшее место для покупки тунца, ваху, луциана, марлина · <a href="https://www.google.com/maps?q=-4.619,55.451" target="_blank" rel="noopener">показать на карте</a>.
+        <strong style="color:#e76f51;">⚠ Временно</strong> — работает в бывшем здании STC (рядом) на время реконструкции с 2025 г.
+        Часы работы: <strong>05:30–17:00</strong> ежедневно. Лучший выбор и цены — к открытию (06:00–08:00), пока не разобрали свежий улов и не припекает солнце.
+        Торг уместен. Цены: целая рыба ~60–100 SCR/кг, филе тунца ~120–150 SCR/кг.
+      </p>
+      <p>
+        На Праслине и Ла-Диге можно купить кокосы (15–25 SCR), бананы (10–15 SCR за гроздь), папайю, манго по сезону
+        у придорожных лотков — значительно дешевле супермаркетов.
+      </p>
+    </section>
+
+    <!-- ===== RESTAURANTS ===== -->
+    <section id="restaurants">
+      <h2>Топ-рестораны по маршруту</h2>
+      <p class="lead">
+        На каждой стоянке — только лучшие рестораны Сейшел. Рейтинги собраны с TripAdvisor, Google Maps, Wanderlog (2025–2026).
+        Рекомендуем бронировать заранее для группы 8 человек.
+      </p>
+
+      <div id="resto-map" role="application" aria-label="Карта ресторанов Сейшел"></div>
+      <p class="map-note">Карта © участники OpenStreetMap. Цвета маркеров: <strong style="color:#e76f51;">оранжевый</strong> — рестораны Маэ, <strong style="color:#3ec9b8;">бирюзовый</strong> — рестораны Праслин, <strong style="color:#e8d5b5;">песочный</strong> — рестораны Ла-Диг, <strong style="color:#f4d03f;">жёлтый</strong> — рынки/супермаркеты.</p>
+
+      <h3>📍 Eden Island / Маэ (Дни 1, 7)</h3>
+
+      <div class="resto-card">
+        <h4>The Boardwalk Bar & Grill · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.3 / 5</span>
+          <span>356 отзывов</span>
+          <span class="resto-tag">интернациональная</span>
+          <span class="resto-tag">у воды</span>
+        </div>
+        <p class="resto-desc">
+          Прямо на территории Eden Island Marina, в 100 м от причала. Живая музыка по пятницам, вид на яхты и залив.
+          Завтраки, обеды, ужины, коктейли. Средний чек: 400–700 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Del Place Restaurant — <em>#1 в Виктории</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.5 / 5</span>
+          <span>1 681 отзыв</span>
+          <span class="resto-tag">креольская</span>
+          <span class="resto-tag">морепродукты</span>
+        </div>
+        <p class="resto-desc">
+          Port Glaud, западное побережье Маэ. Панорамный вид на океан, собственная органическая ферма.
+          Сигнатура: тартар из тунца, морепродукты, коктейли. Серебряная награда Sustainable Seychelles. Средний чек: 500–900 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Maison Marengo · <a class="map-inline" href="https://www.google.com/maps?q=-4.704,55.524" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.5 / 5</span>
+          <span>350+ отзывов Google</span>
+          <span class="resto-tag">аутентичная креольская</span>
+          <span class="resto-tag">морепродукты</span>
+        </div>
+        <p class="resto-desc">
+          Domaine de Val des Prés, Au Cap. Лучшая аутентичная креольская кухня на Маэ.
+          Карри из осьминога, гриль-рыба, свежие соки. Своя органическая ферма. Билет Sustainable Seychelles Silver Award.
+          Средний чек: 400–700 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>La Plage Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.600,55.432" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.5 / 5</span>
+          <span>Beau Vallon</span>
+          <span class="resto-tag">интернациональная</span>
+          <span class="resto-tag">пляж</span>
+        </div>
+        <p class="resto-desc">
+          Прямо на пляже Beau Vallon. Карпаччо из тунца, салат из пальмового сердца, целый групер-гриль,
+          воскресный бранч. Знаменитые коктейли и закаты. Средний чек: 500–800 SCR.
+        </p>
+      </div>
+
+      <h3>📍 Праслин (Дни 3, 5)</h3>
+
+      <div class="resto-card">
+        <h4>Café des Arts — <em>#1 на Праслине</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.4 / 5</span>
+          <span>1 887 отзывов</span>
+          <span class="resto-tag">гастрономическая</span>
+          <span class="resto-tag">на пляже</span>
+        </div>
+        <p class="resto-desc">
+          Le Duc de Praslin, Anse Volbert (Côte d'Or). Pесторан прямо на пляже — признан лучшим на Праслине.
+          Морепродукты, эпикурейская кухня. Днём — лёгкий пляжный ланч, вечером — элегантный ужин.
+          Дресс-код: Casual Chic. Средний чек: 600–1 000 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Pirogue Restaurant & Bar · <a class="map-inline" href="https://www.google.com/maps?q=-4.303,55.736" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.2 / 5</span>
+          <span>Google 4.2 · 442+ отзыва</span>
+          <span class="resto-tag">креольская</span>
+          <span class="resto-tag">семейная</span>
+        </div>
+        <p class="resto-desc">
+          Côte d'Or Beach, Anse Volbert. Семейный ресторан с видом на океан. 90% персонала — праслинцы.
+          Сигнатура: осьминог карри, улов дня, лобстер-гриль. По пятницам — живая музыка. Средний чек: 400–700 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Legend · <a class="map-inline" href="https://www.google.com/maps?q=-4.277,55.703" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.7 / 5</span>
+          <span>87 отзывов</span>
+          <span class="resto-tag">индийская</span>
+          <span class="resto-tag">премиум</span>
+        </div>
+        <p class="resto-desc">
+          Anse Kerlan (в отеле Lemuria Resort). #1 ресторан Anse Kerlan. Изысканная индийская кухня, вегетарианские опции.
+          Один из лучших ресторанов Праслина. Средний чек: 600–1 000 SCR.
+        </p>
+      </div>
+
+      <h3>📍 Ла-Диг (День 4)</h3>
+
+      <div class="resto-card">
+        <h4>Le Nautique Waterfront Restaurant — <em>#1 на Ла-Диге</em> · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.6 / 5</span>
+          <span>392 отзыва</span>
+          <span class="resto-tag">водный фронт</span>
+          <span class="resto-tag">премиум</span>
+        </div>
+        <p class="resto-desc">
+          La Passe, у причала парома. Лучший ресторан Ла-Дига. Фьюжн местной и международной кухни,
+          свежайшие морепродукты, винная карта, коктейли. Закаты над океаном. Средний чек: 600–1 000 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Chez Jules Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.5 / 5</span>
+          <span>1 400+ отзывов</span>
+          <span class="resto-tag">креольская</span>
+          <span class="resto-tag">аутентичная</span>
+        </div>
+        <p class="resto-desc">
+          Anse Banane, восточное побережье. Знаменит карри из осьминога с кокосовым молоком и стейком из тунца.
+          Рядом гуляют гигантские черепахи. Домашнее манго-мороженое. Порции большие. Средний чек: 500–800 SCR.
+        </p>
+      </div>
+
+      <div class="resto-card">
+        <h4>Le Repaire — Italian Restaurant · <a class="map-inline" href="https://www.google.com/maps?q=-4.354,55.833" target="_blank" rel="noopener">показать на карте</a></h4>
+        <div class="resto-meta">
+          <span class="resto-rating">★ 4.6 / 5</span>
+          <span>1 191 отзыв</span>
+          <span class="resto-tag">итальянская</span>
+          <span class="resto-tag">бутик-отель</span>
+        </div>
+        <p class="resto-desc">
+          La Passe, 5 мин от причала. Аутентичная итальянская кухня: пицца, паста, ризотто, тирамису.
+          Свежайший луциан и групер по-итальянски. Коктейли на пляже Lo Lans Bar. Средний чек: 400–700 SCR.
+        </p>
+      </div>
+
+      <div class="callout callout-restaurant">
+        <strong>Важно:</strong> на <strong>Кюрьёзе</strong> (национальный парк) и <strong>Сен-Пьере</strong> ресторанов нет — берите ланч с собой.
+        На <strong>Фелисите</strong> ресторанов для публики нет. Ужин в эти дни планируйте по возвращении на Праслин или Ла-Диг.
+      </div>
+    </section>
+
+    <!-- ===== MEAL PLAN ===== -->
+    <section id="mealplan">
+      <h2>Меню на неделю</h2>
+      <p class="lead">
+        План на 8 человек с учётом простоты приготовления на камбузе катамарана. 4 ужина — на борту,
+        3 выхода в топ-рестораны (Eden Island, Праслин, Ла-Диг).
+      </p>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">14 ноя · сб</span>
+          <h3 class="meal-title">День 1 — Заселение, закупка, ужин в ресторане</h3>
+          <span class="badge eatat">ресторан</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Кафе в аэропорту / на Eden Island</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Ланч в Виктории во время закупки (STC / рынок)</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food"><strong>The Boardwalk Bar & Grill</strong> (Eden Island, 100 м от причала) · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">карта</a></div>
+            </div>
+          </div>
+          <p class="day-meta"><strong>Задача:</strong> закупка провизии на неделю в STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> / Spar · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a> / ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a>. Проверка камбуза.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">15 ноя · вс</span>
+          <h3 class="meal-title">День 2 — Sainte Anne Marine Park</h3>
+          <span class="badge seafood">рыба на борту</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Овсянка с бананом и мёдом, тосты с авокадо, кофе</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Сэндвичи с тунцом (консервы) и огурцом, фрукты, снеки</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food">Рыба-гриль (луциан / ваху), киноа с овощами, белое вино</div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Приготовление:</em> рыбу замариновать с лимоном, чесноком и тимьяном — запечь на гриле или в духовке.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">16 ноя · пн</span>
+          <h3 class="meal-title">День 3 — Праслин, ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></h3>
+          <span class="badge eatat">ресторан ★</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Яичница с беконом, тосты, апельсиновый сок</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Лапша быстрого приготовления с овощами + яблоки (под парусом)</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food"><strong>Café des Arts</strong> (Anse Volbert, пляж Côte d'Or) — морепродукты, закат · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Café des Arts:</em> #1 на Праслине · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a>. Casual Chic. Бронь обязательна. Средний чек 600–1 000 SCR/чел.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">17 ноя · вт</span>
+          <h3 class="meal-title">День 4 — Ла-Диг, обед в Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a> / ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></h3>
+          <span class="badge eatat">ресторан ★</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Гранола с йогуртом, свежие фрукты, чай</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food"><strong>Chez Jules</strong> (Anse Banane) — карри из осьминога / тунец, черепахи рядом · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a></div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food"><strong>Le Nautique Waterfront</strong> (La Passe) — #1 на Ла-Диге, закат у воды · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Le Nautique:</em> 4.6★, 392 отзыва · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a>. Лучший закат на острове. Бронировать за 2–3 дня.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">18 ноя · ср</span>
+          <h3 class="meal-title">День 5 — Кюрьёз и Сен-Пьер (ланч с собой)</h3>
+          <span class="badge seafood">улов дня</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Блины (банан, шоколадная паста, кленовый сироп), кофе</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Пикник на Кюрьёзе: свежий тунец севиче, тортильи, фрукты</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food">Стейки из рыбы-гриль, запечённый картофель, овощи, соус тартар</div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Совет:</em> купите свежего тунца на рынке Праслина — сделайте севиче на палубе у Сен-Пьера. На Кюрьёзе ресторанов нет.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">19 ноя · чт</span>
+          <h3 class="meal-title">День 6 — Фелисите / резервный день</h3>
+          <span class="badge tip">остатки — в дело</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Тост с авокадо и яйцом пашот, грейпфрут</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Остатки + салат с нутом, лепёшки, хумус</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food">До-ужин из остатков / лёгкая паста с морепродуктами</div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Задача:</em> доесть скоропортящиеся продукты. Если возвращаетесь к Маэ — ужин в <strong>Maison Marengo</strong> (4.5★) · <a class="map-inline" href="https://www.google.com/maps?q=-4.704,55.524" target="_blank" rel="noopener">карта</a>.</p>
+        </div>
+      </article>
+
+      <article class="meal-day">
+        <div class="meal-head">
+          <span class="meal-date">20 ноя · пт</span>
+          <h3 class="meal-title">День 7 — Заход в марину, ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></h3>
+          <span class="badge eatat">ресторан ★</span>
+        </div>
+        <div class="meal-body">
+          <div class="meal-grid">
+            <div class="meal-slot">
+              <div class="label">Завтрак</div>
+              <div class="food">Остатки гранолы, йогурт, чай, бананы</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Обед</div>
+              <div class="food">Сэндвичи с консервированным тунцом / арахисовым маслом</div>
+            </div>
+            <div class="meal-slot">
+              <div class="label">Ужин</div>
+              <div class="food"><strong>Del Place Restaurant</strong> (Port Glaud) — #1 в Виктории, прощальный ужин · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></div>
+            </div>
+          </div>
+          <p class="day-meta"><em>Del Place:</em> 4.5★, 1 681 отзыв · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a>. Панорамный вид, креольская кухня. Трансфер из марины ~15 мин на такси.</p>
+        </div>
+      </article>
+
+      <div class="callout">
+        <strong>Водный режим на 8 человек:</strong> минимум 30–40 литров питьевой воды в бутылях по 5 л (30 SCR/бутыль).
+        Вода из крана на Сейшелах питьевая, но для походов лучше бутилированная.
+      </div>
+    </section>
+
+    <!-- ===== SHOPPING LIST ===== -->
+    <section id="shopping">
+      <h2>Список закупок</h2>
+      <p class="lead">
+        Полный список продуктов на <strong>8 человек / 7 дней</strong>. Можно заказать через ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a> с доставкой на яхту или купить
+        самостоятельно в STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> / Spar Eden Island · <a class="map-inline" href="https://www.google.com/maps?q=-4.6406,55.4758" target="_blank" rel="noopener">карта</a> в день заезда.
+      </p>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>🍞 Бакалея и сухие продукты</h3>
+          <ul>
+            <li>Макароны (спагетти, фарфале) — 4 уп.</li>
+            <li>Рис — 3 кг</li>
+            <li>Киноа / булгур — 1 уп.</li>
+            <li>Овсяные хлопья — 1 уп.</li>
+            <li>Гранола — 1 большая упаковка</li>
+            <li>Мука — 0,5 кг</li>
+            <li>Сахар — 0,5 кг</li>
+            <li>Лапша быстрого приготовления — 8 шт.</li>
+            <li>Консервы: тунец 4 банки, фасоль 2 банки</li>
+            <li>Оливковое масло — 1 бут.</li>
+            <li>Специи: соль, перец, паприка, карри, тимьян</li>
+            <li>Соус: песто, соевый, тартар, томатная паста</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🥛 Молочка и яйца</h3>
+          <ul>
+            <li>Молоко — 4–5 л</li>
+            <li>Сливки (для пасты) — 200 мл</li>
+            <li>Йогурт натуральный — 10–12 шт.</li>
+            <li>Сыры: пармезан 150 г + твёрдый / гауда 400 г</li>
+            <li>Масло сливочное — 250 г</li>
+            <li>Яйца — 30 шт.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🥩 Мясо, рыба и заморозка</h3>
+          <ul>
+            <li>Куриное филе — 2–2,5 кг</li>
+            <li>Фарш (говядина / свинина) — 600 г</li>
+            <li>Бекон — 300 г (для завтраков)</li>
+            <li>Свежая рыба — 3–4 кг (покупать на рынке или у рыбаков)</li>
+            <li>Креветки — 500 г (опционально)</li>
+            <li>Овощная заморозка — 1 уп.</li>
+            <li>Мороженое — для десертов</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🥬 Овощи, фрукты, зелень</h3>
+          <ul>
+            <li>Помидоры — 2 кг</li>
+            <li>Огурцы — 1,5 кг</li>
+            <li>Лук репчатый — 1,5 кг</li>
+            <li>Чеснок — 2 головки</li>
+            <li>Картофель — 2 кг</li>
+            <li>Авокадо — 6–8 шт.</li>
+            <li>Лимоны / лаймы — 6–8 шт.</li>
+            <li>Салат (айсберг / руккола) — 3 упаковки</li>
+            <li>Кинза, петрушка — по пучку</li>
+            <li>Бананы — 3 грозди (~3 кг)</li>
+            <li>Яблоки — 1,5 кг</li>
+            <li>Апельсины / манго / папайя — 2 кг</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🥤 Напитки</h3>
+          <ul>
+            <li>Вода питьевая 5 л — 6–8 бутылей</li>
+            <li>Сок апельсиновый — 3 л</li>
+            <li>Кофе молотый / растворимый</li>
+            <li>Чай (пакетики)</li>
+            <li>Кола / спрайт — 4 бут. 1,5 л</li>
+            <li>Вино белое сухое — 3–4 бут.</li>
+            <li>Вино красное сухое — 2 бут.</li>
+            <li>Пиво местное SeyBrew — 16–24 бутылки</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🧂 Снеки и прочее</h3>
+          <ul>
+            <li>Хлеб (батоны / тостовый) — 6–7 шт.</li>
+            <li>Тортильи (лепёшки) — 1 уп.</li>
+            <li>Крекеры, чипсы, орехи — к пиву</li>
+            <li>Печенье — 2 уп.</li>
+            <li>Шоколад / батончики мюсли</li>
+            <li>Шоколадная паста (Nutella)</li>
+            <li>Мёд / джем</li>
+            <li>Арахисовое масло — 1 банка</li>
+            <li>Хумус — 2 упаковки</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Не забудьте:</strong> спички / зажигалка для газовой плиты, зип-пакеты, пищевая плёнка, фольга,
+        бумажные полотенца, мешки для мусора (утилизация на берегу, не в море!).
+      </div>
+    </section>
+
+    <!-- ===== BUDGET ===== -->
+    <section id="budget">
+      <h2>Бюджет на провизию и примерные цены</h2>
+      <p class="lead">
+        Цены в сейшельских рупиях (SCR) и долларах США (USD, май 2026).
+        Разброс зависит от магазина: STC · <a class="map-inline" href="https://www.google.com/maps?q=-4.6295,55.4604" target="_blank" rel="noopener">карта</a> — базовая цена, ISPC · <a class="map-inline" href="https://www.google.com/maps?q=ISPC+Bois+de+Rose+Victoria+Seychelles" target="_blank" rel="noopener">карта</a> / Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">карта</a> — премиум.
+      </p>
+
+      <h3>Цены на основные продукты</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Продукт</th>
+            <th>Цена (SCR)</th>
+            <th>Цена (~USD)</th>
+            <th>Примечание</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Молоко, 1 л</td><td>22–36</td><td>$1,5–2,5</td><td>STC дешевле, импорт дороже</td></tr>
+          <tr><td>Хлеб белый, 500 г</td><td>16–48</td><td>$1,1–3,3</td><td>Местная выпечка дешевле</td></tr>
+          <tr><td>Рис белый, 1 кг</td><td>23–60</td><td>$1,6–4,1</td><td>Основа гарниров</td></tr>
+          <tr><td>Яйца, 12 шт.</td><td>48–78</td><td>$3,3–5,4</td><td>Местные дешевле</td></tr>
+          <tr><td>Сыр местный, 1 кг</td><td>165–800</td><td>$11–55</td><td>Импортный — дорого, брать по 300–400 г</td></tr>
+          <tr><td>Куриное филе, 1 кг</td><td>60–125</td><td>$4,1–8,6</td><td>Хорошее соотношение цена/качество</td></tr>
+          <tr><td>Говядина, 1 кг</td><td>100–250</td><td>$6,9–17,2</td><td>Премиум — Chop Shop · <a class="map-inline" href="https://www.google.com/maps?q=Chop+Shop+Beau+Vallon+Seychelles" target="_blank" rel="noopener">карта</a></td></tr>
+          <tr><td>Рыба свежая, 1 кг</td><td>60–120</td><td>$4,1–8,3</td><td>Лучшая цена на рынке Виктории</td></tr>
+          <tr><td>Помидоры, 1 кг</td><td>50–110</td><td>$3,4–7,6</td><td>Зависит от сезона</td></tr>
+          <tr><td>Бананы, 1 кг</td><td>25–65</td><td>$1,7–4,5</td><td>Местные — дёшево у лоточников</td></tr>
+          <tr><td>Яблоки, 1 кг</td><td>25–35</td><td>$1,7–2,4</td><td>Импортные</td></tr>
+          <tr><td>Картофель, 1 кг</td><td>15–38</td><td>$1,0–2,6</td><td>Базовый овощ</td></tr>
+          <tr><td>Лук, 1 кг</td><td>14–40</td><td>$1,0–2,8</td><td>—</td></tr>
+          <tr><td>Вода питьевая, 1,5 л</td><td>15–25</td><td>$1,0–1,7</td><td>Покупайте в больших бутылях 5 л</td></tr>
+          <tr><td>Вино (среднее), бут.</td><td>120–200</td><td>$8,3–13,8</td><td>Местное / южноафриканское</td></tr>
+          <tr><td>Пиво SeyBrew, 0,5 л</td><td>33–92</td><td>$2,3–6,3</td><td>В магазине ~51 SCR</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Смета на неделю (8 человек, SCR)</h3>
+      <div class="card" style="max-width:500px;">
+        <div class="price-row">
+          <span class="item">🍞 Бакалея и сухие продукты</span>
+          <span><span class="scr">~450 SCR</span> <span class="usd">$31</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🥛 Молочка, яйца, сыр</span>
+          <span><span class="scr">~450 SCR</span> <span class="usd">$31</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🥩 Курица, рыба, мясо</span>
+          <span><span class="scr">~1 000 SCR</span> <span class="usd">$69</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🥬 Овощи, фрукты, зелень</span>
+          <span><span class="scr">~650 SCR</span> <span class="usd">$45</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🥤 Вода, соки</span>
+          <span><span class="scr">~350 SCR</span> <span class="usd">$24</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🍷 Вино, пиво</span>
+          <span><span class="scr">~700 SCR</span> <span class="usd">$48</span></span>
+        </div>
+        <div class="price-row">
+          <span class="item">🧂 Снеки, хлеб, прочее</span>
+          <span><span class="scr">~450 SCR</span> <span class="usd">$31</span></span>
+        </div>
+        <div class="total-row">
+          <span>Провизия на борт ≈</span>
+          <span><span class="scr" style="color:var(--sand);">4 050 SCR</span> <span class="usd" style="color:var(--muted);">$279</span></span>
+        </div>
+        <div class="price-row" style="border-top:1px solid rgba(62, 201, 184, 0.15); padding-top:0.6rem; margin-top:0.3rem;">
+          <span class="item" style="font-size:0.85rem;color:var(--muted);">Рестораны (3 выхода × 8 чел.)</span>
+          <span><span class="scr" style="font-size:0.85rem;">~3 000–5 000 SCR</span> <span class="usd" style="font-size:0.82rem;">$210–350</span></span>
+        </div>
+        <div class="price-row" style="border-bottom:0;">
+          <span class="item" style="font-size:0.85rem;color:var(--muted);">Общий бюджет с ресторанами</span>
+          <span><span class="scr" style="font-size:0.85rem;color:var(--sand);font-weight:700;">~7 000–9 000 SCR</span> <span class="usd" style="font-size:0.82rem;">$490–630</span></span>
+        </div>
+      </div>
+
+      <h3>Дополнительные расходы</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Расход</th>
+            <th>SCR</th>
+            <th>~USD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Такси SEZ → Eden Island</td><td>~300</td><td>$20</td></tr>
+          <tr><td>Обед на Ла-Диге (Chez Jules · <a class="map-inline" href="https://www.google.com/maps?q=-4.369,55.856" target="_blank" rel="noopener">карта</a>)</td><td>250–400</td><td>$17–28</td></tr>
+          <tr><td>Ужин в Café des Arts · <a class="map-inline" href="https://www.google.com/maps?q=-4.302,55.735" target="_blank" rel="noopener">карта</a></td><td>600–1 000</td><td>$41–69</td></tr>
+          <tr><td>Ужин в Le Nautique · <a class="map-inline" href="https://www.google.com/maps?q=-4.353,55.833" target="_blank" rel="noopener">карта</a></td><td>600–1 000</td><td>$41–69</td></tr>
+          <tr><td>Ужин в Del Place · <a class="map-inline" href="https://www.google.com/maps?q=-4.614,55.428" target="_blank" rel="noopener">карта</a></td><td>500–900</td><td>$34–62</td></tr>
+          <tr><td>The Boardwalk Bar · <a class="map-inline" href="https://www.google.com/maps?q=-4.633,55.467" target="_blank" rel="noopener">карта</a></td><td>400–700</td><td>$28–48</td></tr>
+          <tr><td>Чаевые (необязательно, ~10%)</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== TIPS ===== -->
+    <section id="tips">
+      <h2>Советы по питанию на яхте</h2>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>🍳 Камбуз — Lagoon 42 Golden Bride</h3>
+          <ul>
+            <li><strong>Подтверждённое оснащение</strong> (boataround.com): плита, духовка, холодильник, морозильная камера, раковина. Гриль не указан — уточните.</li>
+            <li>Генератор и кондиционер на борту — готовьте с комфортом даже в жаркий полдень.</li>
+            <li>Холодильник / морозильник: рыбу и мясо храните в морозилке, размораживайте утром перед готовкой.</li>
+            <li>Рекомендуем взять свои: острый нож, овощечистку, тёрку, открывашку (штопор) — стандартный набор может быть минимальным.</li>
+            <li>Проверьте при заселении: кастрюли (минимум 2), сковорода, противень для духовки.</li>
+            <li>На 8 человек — готовьте в 2 захода. Планируйте блюда на 20–30 мин готовки.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🐟 Местная кухня (креольская)</h3>
+          <ul>
+            <li>Основы: рыба, кокосовое молоко, карри, лайм, имбирь, чили, чеснок.</li>
+            <li><em>Пуассон ругай</em> — сырая рыба, маринованная в лимоне с луком (севиче по-креольски).</li>
+            <li><em>Карри курица</em> с кокосовым молоком — простое и сытное блюдо.</li>
+            <li><em>Ладоб</em> — десерт из бананов, кокосового молока, ванили и сахара.</li>
+            <li>На рынках берите специи в пакетиках — шафрановый порошок, смесь для карри, ваниль.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>📦 Проверка перед закупкой</h3>
+          <ul>
+            <li>Что уже есть на лодке: соль, перец, масло, чай, кофе? Спросите у чартерной компании.</li>
+            <li>Проверьте посуду: тарелки, миски, стаканы, приборы — на 8 персон.</li>
+            <li>Есть ли термос? Пригодится для кофе утром.</li>
+            <li>Кулер / термо-сумка — если нет, купите в STC недорогую.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin: 1.5rem 0;">
+        <h3>🎣 Рыбалка с борта</h3>
+        <ul>
+          <li><strong>Лицензия не требуется</strong> для recreational fishing (Fisheries Act, paragraph 21). Однако если будете ловить целенаправленно с гидом — нужен sport fishing permit (~200 SCR, оформляет оператор).</li>
+          <li><strong>Запрещено</strong> в морских парках (Sainte Anne, Curieuse), spearfishing с аквалангом, использование сетей.</li>
+          <li>Действуют ограничения по размеру и вылову (Mahé Plateau Trap and Line Fishery Management Plan). Catch & release для костных рыб (bonefish) — обязателен.</li>
+          <li>Уточните у CharterClick, есть ли на борту удочки. Если нет — купите в STC простую спиннинговую снасть (~300–500 SCR).</li>
+          <li>Лучший сезон: апрель–ноябрь. В ноябре отлично ловится тунец, ваху, макрель.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin: 1.5rem 0;">
+        <h3>📋 Чек-лист: проверка камбуза при заселении</h3>
+        <p style="margin:0 0 0.5rem;font-size:0.92rem;color:var(--muted);">Отметьте, что есть на борту, чтобы не купить лишнего. Что отсутствует — докупите в первый день.</p>
+        <ul>
+          <li>Кастрюли (большая + средняя)</li>
+          <li>Сковорода (антипригарная)</li>
+          <li>Противень для духовки</li>
+          <li>Ножи (шеф-нож, нож для овощей, хлебный нож)</li>
+          <li>Разделочная доска (хотя бы 1)</li>
+          <li>Тарелки глубокие/плоские, миски — 8+ шт.</li>
+          <li>Стаканы/кружки — 8+ шт.</li>
+          <li>Столовые приборы (ложки, вилки, ножи) — 8+ комплектов</li>
+          <li>Штопор / открывашка</li>
+          <li>Консервный нож</li>
+          <li>Кухонные полотенца</li>
+          <li>Губки для мытья посуды + средство</li>
+          <li>Мусорные пакеты</li>
+          <li>Соль, перец, масло (могут быть от предыдущего экипажа)</li>
+          <li>Термос / кулер-сумка</li>
+          <li>Пищевая плёнка / фольга / зип-пакеты</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin: 1.5rem 0;">
+        <h3>⚠️ Важные напоминания</h3>
+        <ul>
+          <li>Алкоголь: прямого законодательного лимита на recreational bareboat нет. Однако чартерный договор требует, чтобы шкипер был в состоянии управлять судном. Кроме того, раздел 8C Misuse of Drugs Act запрещает управление моторным плавсредством под воздействием наркотиков. Практический совет: за ужином — бокал вина, но шкиперу лучше оставаться полностью трезвым.</li>
+          <li>Мусор: пластик, банки, упаковку — утилизируйте только на берегу. За выброс в море — крупный штраф.</li>
+          <li>Вода: не лейте жир в раковину — камбузная сантехника засоряется быстро.</li>
+          <li>Экономия: готовьте впрок — вечером на ужин, остатки на обед следующего дня.</li>
+        </ul>
+      </div>
+
+      <div class="callout">
+        <strong>Золотое правило:</strong> НЕ откладывайте закупку «на потом». Магазины — только на Маэ.
+        На Праслине выбор втрое меньше, на Ла-Диге — впятеро. Рыбу и фрукты покупайте на островах,
+        всё остальное — в первый день в Виктории. Рестораны бронируйте за 2–3 дня для группы 8 человек.
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="index.html">← Маршрут яхтинга</a>
+        · Lagoon 42 «Golden Bride» · 8 человек · 14–21 ноября 2026
+      </p>
+      <p>Цены на основе данных Numbeo, TripAdvisor, Google Maps (май 2026). Курс: ~1 USD = 14,5 SCR (на май 2026, колебания 13,7–14,5).</p>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      var map = L.map("resto-map").setView([-4.38, 55.72], 9);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
+        maxZoom: 18
+      }).addTo(map);
+
+      var iconOrange = L.divIcon({ className: "", html: "<svg width='24' height='24' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='9' fill='#e76f51' stroke='#0c1e24' stroke-width='2.5'/></svg>", iconSize: [24, 24], iconAnchor: [12, 12] });
+      var iconTeal = L.divIcon({ className: "", html: "<svg width='24' height='24' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='9' fill='#3ec9b8' stroke='#0c1e24' stroke-width='2.5'/></svg>", iconSize: [24, 24], iconAnchor: [12, 12] });
+      var iconSand = L.divIcon({ className: "", html: "<svg width='24' height='24' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='9' fill='#e8d5b5' stroke='#0c1e24' stroke-width='2.5'/></svg>", iconSize: [24, 24], iconAnchor: [12, 12] });
+      var iconMarket = L.divIcon({ className: "", html: "<svg width='24' height='24' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='9' fill='#f4d03f' stroke='#0c1e24' stroke-width='2.5'/></svg>", iconSize: [24, 24], iconAnchor: [12, 12] });
+
+      var restaurants = [
+        { name: "The Boardwalk Bar & Grill", ll: [-4.633, 55.467], icon: iconOrange, rating: "★ 4.3", desc: "Eden Island Marina" },
+        { name: "Del Place Restaurant", ll: [-4.614, 55.428], icon: iconOrange, rating: "★ 4.5", desc: "#1 в Виктории · Port Glaud" },
+        { name: "Maison Marengo", ll: [-4.704, 55.524], icon: iconOrange, rating: "★ 4.5", desc: "Au Cap · креольская" },
+        { name: "La Plage Restaurant", ll: [-4.600, 55.432], icon: iconOrange, rating: "★ 4.5", desc: "Beau Vallon · на пляже" },
+        { name: "Café des Arts", ll: [-4.302, 55.735], icon: iconTeal, rating: "★ 4.4", desc: "#1 на Праслине · Anse Volbert" },
+        { name: "Pirogue Restaurant & Bar", ll: [-4.303, 55.736], icon: iconTeal, rating: "★ 4.2", desc: "Côte d'Or · креольская" },
+        { name: "Legend", ll: [-4.277, 55.703], icon: iconTeal, rating: "★ 4.7", desc: "Anse Kerlan · индийская" },
+        { name: "Le Nautique Waterfront", ll: [-4.353, 55.833], icon: iconSand, rating: "★ 4.6", desc: "#1 на Ла-Диге · La Passe" },
+        { name: "Chez Jules", ll: [-4.369, 55.856], icon: iconSand, rating: "★ 4.5", desc: "Anse Banane · креольская" },
+        { name: "Le Repaire", ll: [-4.354, 55.833], icon: iconSand, rating: "★ 4.6/5", desc: "La Passe · итальянская" },
+        { name: "Sir Selwyn Selwyn-Clarke Market", ll: [-4.619, 55.451], icon: iconMarket, rating: "рыбный рынок", desc: "Виктория · ежедневно с 05:30" },
+        { name: "STC Hyper Market", ll: [-4.6295, 55.4604], icon: iconMarket, rating: "супермаркет", desc: "Bois de Rose · крупнейший выбор" },
+        { name: "Spar Eden Island", ll: [-4.6406, 55.4758], icon: iconMarket, rating: "супермаркет", desc: "Eden Plaza · 5 мин от причала" }
+      ];
+
+      var latlngs = restaurants.map(function (p) { return p.ll; });
+      restaurants.forEach(function (p) {
+        L.marker(p.ll, { icon: p.icon })
+          .addTo(map)
+          .bindPopup("<strong>" + p.name + "</strong><br>" + p.rating + " · " + p.desc);
+      });
+
+      map.fitBounds(latlngs, { padding: [40, 40] });
+    })();
+  </script>
+
+</body>
+</html>
